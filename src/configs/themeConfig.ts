@@ -7,6 +7,7 @@ import { ContentWidth } from 'src/@core/layouts/types'
 type ThemeConfig = {
   mode: PaletteMode
   templateName: string
+  appName: string
   routingLoader: boolean
   disableRipple: boolean
   navigationSize: number
@@ -17,7 +18,8 @@ type ThemeConfig = {
 
 const themeConfig: ThemeConfig = {
   // ** Layout Configs
-  templateName: 'Materio' /* App Name */,
+  templateName: 'Materio' /* Template Name */,
+  appName: 'Cinemo' /* App Name */,
   mode: 'light' /* light | dark */,
   contentWidth: 'boxed' /* full | boxed */,
 

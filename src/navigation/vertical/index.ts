@@ -3,6 +3,10 @@ import Login from 'mdi-material-ui/Login'
 import Table from 'mdi-material-ui/Table'
 import CubeOutline from 'mdi-material-ui/CubeOutline'
 import HomeOutline from 'mdi-material-ui/HomeOutline'
+import TicketOutline from 'mdi-material-ui/TicketOutline'
+import Theater from 'mdi-material-ui/Theater'
+import MovieFilderOutline from 'mdi-material-ui/MovieFilterOutline'
+import CalendarBlankOutline from 'mdi-material-ui/CalendarBlankOutline'
 import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
@@ -19,6 +23,32 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Dashboard',
       icon: HomeOutline,
       path: '/'
+    },
+    {
+      sectionTitle: 'Management',
+    },
+    {
+      title: 'Sell ticket',
+      icon: TicketOutline,
+      path: '/sell-ticket'
+    },
+    {
+      title: 'Movies',
+      icon: MovieFilderOutline,
+      path: '/movies'
+    },
+    {
+      title: 'Showtimes',
+      icon: CalendarBlankOutline,
+      path: '/schedule'
+    },
+    {
+      title: 'Theaters',
+      icon: Theater,
+      path: '/theaters'
+    },
+    {
+      sectionTitle: 'Account'
     },
     {
       title: 'Account Settings',

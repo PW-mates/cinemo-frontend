@@ -27,7 +27,7 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
-
+  
   useEffect(() => {
     if (!settings.user) {
       router.push('/pages/login', undefined, { shallow: true })

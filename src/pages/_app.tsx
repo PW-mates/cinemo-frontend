@@ -5,7 +5,7 @@ import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
 // ** Loader Import
-import NProgress from 'nprogress'
+import NProgress, { settings } from 'nprogress'
 
 // ** Emotion Imports
 import { CacheProvider } from '@emotion/react'
@@ -61,7 +61,7 @@ const App = (props: ExtendedAppProps) => {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>{`${themeConfig.appName} - Material Design React Admin Template`}</title>
+        <title>{`${themeConfig.appName} - Little Cinemo Management System`}</title>
         <meta
           name='description'
           content={`${themeConfig.appName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}

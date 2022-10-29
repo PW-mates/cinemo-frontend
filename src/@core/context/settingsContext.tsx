@@ -38,6 +38,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [settings, setSettings] = useState<Settings>({ ...initialSettings })
 
   const saveSettings = (updatedSettings: Settings) => {
+    localStorage.setItem('settings', JSON.stringify(updatedSettings))
     setSettings(updatedSettings)
   }
 

@@ -26,6 +26,12 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
+  if (typeof window !== 'undefined') {
+    const localSettings = localStorage.getItem('settings')
+    if (localSettings && JSON.parse(localSettings).mode !== settings.mode) {
+      saveSettings(JSON.parse(localSettings))
+    }
+  }
 
   /**
    *  The below variable will hide the current layout menu at given screen size.

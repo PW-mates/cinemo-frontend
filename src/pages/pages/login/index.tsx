@@ -43,6 +43,7 @@ import { Children } from 'react'
 import { useEffect } from 'react'
 
 interface State {
+  username: string
   password: string
   showPassword: boolean
 }
@@ -72,7 +73,7 @@ const LoginPage = () => {
     password: '',
     showPassword: false
   })
-  const [snackbar, setSnackbar] = useState<State>({
+  const [snackbar, setSnackbar] = useState({
     open: false,
     message: ''
   })
@@ -90,11 +91,11 @@ const LoginPage = () => {
     setValues({ ...values, showPassword: !values.showPassword })
   }
 
-  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (event: any) => {
     event.preventDefault()
   }
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: any) => {
     if (event.key === 'Enter') {
       handleLogin(event)
     }

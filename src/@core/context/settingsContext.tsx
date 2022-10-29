@@ -8,12 +8,13 @@ import { PaletteMode } from '@mui/material'
 import themeConfig from 'src/configs/themeConfig'
 
 // ** Types Import
-import { ThemeColor, ContentWidth } from 'src/@core/layouts/types'
+import { ThemeColor, ContentWidth, User } from 'src/@core/layouts/types'
 
 export type Settings = {
   mode: PaletteMode
   themeColor: ThemeColor
   contentWidth: ContentWidth
+  user?: User
 }
 
 export type SettingsContextValue = {
@@ -24,7 +25,8 @@ export type SettingsContextValue = {
 const initialSettings: Settings = {
   themeColor: 'primary',
   mode: themeConfig.mode,
-  contentWidth: themeConfig.contentWidth
+  contentWidth: themeConfig.contentWidth,
+  user: undefined
 }
 
 // ** Create Context

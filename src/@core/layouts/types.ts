@@ -44,3 +44,8 @@ export type LayoutProps = {
 export type BlankLayoutProps = {
   children: ReactNode
 }
+
+export type User = {
+  id: string
+  token: string
+}

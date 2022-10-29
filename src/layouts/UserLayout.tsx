@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -26,12 +26,12 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
-  if (typeof window !== 'undefined') {
+  useEffect(() => {
     const localSettings = localStorage.getItem('settings')
-    if (localSettings && JSON.parse(localSettings).mode !== settings.mode) {
+    if (localSettings) {
       saveSettings(JSON.parse(localSettings))
     }
-  }
+  })
 
   /**
    *  The below variable will hide the current layout menu at given screen size.

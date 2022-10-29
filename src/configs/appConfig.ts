@@ -5,7 +5,7 @@ type AppConfig = {
 }
 
 const appConfig: AppConfig = {
-  endpoint: 'http://localhost:8080'
+  endpoint: 'https://api.cinemo.pl'
 }
 
 export namespace AccountLoginEndpoint {

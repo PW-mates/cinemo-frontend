@@ -11,6 +11,7 @@ import themeConfig from 'src/configs/themeConfig'
 import { ThemeColor, ContentWidth, User } from 'src/@core/layouts/types'
 
 export type Settings = {
+  loaded: boolean
   mode: PaletteMode
   themeColor: ThemeColor
   contentWidth: ContentWidth
@@ -23,6 +24,7 @@ export type SettingsContextValue = {
 }
 
 const initialSettings: Settings = {
+  loaded: false,
   themeColor: 'primary',
   mode: themeConfig.mode,
   contentWidth: themeConfig.contentWidth,
@@ -40,7 +42,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
   const [settings, setSettings] = useState<Settings>({ ...initialSettings })
 
   const saveSettings = (updatedSettings: Settings) => {
-    localStorage.setItem('settings', JSON.stringify(updatedSettings))
+    localStorage.setItem('settings', JSON.stringify({ ...updatedSettings, loaded: true }))
     setSettings(updatedSettings)
   }
 

@@ -47,5 +47,22 @@ export type BlankLayoutProps = {
 
 export type User = {
   id: string
-  token: string
+  access_token: string
+  birthDate?: Date
+  country?: string
+  gender: 'male' | 'female' | 'other'
+  bio?: string
+  personalWebsite?: string
+  language?: string
+  createdAt: Date
+  email: string
+  firstName: string
+  lastName: string
+  updatedAt: Date
+  username: string
+  phone?: string
+  profilePicture?: string
+  cinema?: any
+  status: 'active' | 'inactive'
+  role: 'admin' | 'user'
 }

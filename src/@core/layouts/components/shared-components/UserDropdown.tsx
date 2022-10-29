@@ -94,23 +94,31 @@ const UserDropdown = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <Box sx={{ pt: 2, pb: 3, px: 4 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Badge
-              overlap='circular'
-              badgeContent={<BadgeContentSpan />}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            >
-              <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
-            </Badge>
-            <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
-              <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                Admin
-              </Typography>
+        {settings.user ? (
+          <Box sx={{ pt: 2, pb: 3, px: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Badge
+                overlap='circular'
+                badgeContent={<BadgeContentSpan />}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              >
+                <Avatar
+                  alt={settings.user?.firstName + ' ' + settings.user?.lastName}
+                  src='/images/avatars/1.png'
+                  sx={{ width: '2.5rem', height: '2.5rem' }}
+                />
+              </Badge>
+              <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
+                <Typography sx={{ fontWeight: 600 }}>
+                  {settings.user?.firstName + ' ' + settings.user?.lastName}
+                </Typography>
+                <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
+                  Admin
+                </Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        ) : null}
         <Divider sx={{ mt: 0, mb: 1 }} />
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>

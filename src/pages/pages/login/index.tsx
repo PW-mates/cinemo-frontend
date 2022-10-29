@@ -34,6 +34,8 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
+import { useSettings } from 'src/@core/hooks/useSettings'
 
 interface State {
   password: string
@@ -64,6 +66,7 @@ const LoginPage = () => {
     password: '',
     showPassword: false
   })
+  const { settings, saveSettings } = useSettings()
 
   // ** Hook
   const theme = useTheme()

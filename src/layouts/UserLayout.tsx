@@ -18,6 +18,7 @@ import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
+import router from 'next/router'
 
 interface Props {
   children: ReactNode
@@ -26,12 +27,12 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
+  
   useEffect(() => {
-    const localSettings = localStorage.getItem('settings')
-    if (localSettings) {
-      saveSettings(JSON.parse(localSettings))
+    if (!settings.user) {
+      router.push('/pages/login', undefined, { shallow: true })
     }
-  })
+  }, [settings])
 
   /**
    *  The below variable will hide the current layout menu at given screen size.
@@ -43,7 +44,7 @@ const UserLayout = ({ children }: Props) => {
    */
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
 
-  return (
+  return settings.user ? (
     <VerticalLayout
       hidden={hidden}
       settings={settings}
@@ -62,7 +63,7 @@ const UserLayout = ({ children }: Props) => {
     >
       {children}
     </VerticalLayout>
-  )
+  ) : null
 }
 
 export default UserLayout

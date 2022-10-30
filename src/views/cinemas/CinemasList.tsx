@@ -9,6 +9,8 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 
+import { Cinema } from "src/@core/layouts/types"
+
 
 interface Column {
   id: 'id' | 'name' | 'address' | 'phone' | 'email' | 'website'
@@ -43,7 +45,7 @@ const columns: readonly Column[] = [
   }
 ]
 
-const TheatersList = ({cinemaData}) => {
+const CinemasList = ({cinemaData}: {cinemaData: Cinema[]}) => {
   // ** States
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
@@ -103,4 +105,4 @@ const TheatersList = ({cinemaData}) => {
   )
 }
 
-export default TheatersList
+export default CinemasList

@@ -49,3 +49,15 @@ export type User = {
   id: string
   token: string
 }
+
+type LatLngLiteral = google.maps.LatLngLiteral;
+// ToDo 
+export type Cinema = {
+  id: number
+  name: string
+  address: string
+  phone: string
+  email: string
+  website: string
+  location: LatLngLiteral
+}

@@ -9,13 +9,14 @@ import {
 
 import Paper from '@mui/material/Paper'
 
+import { Cinema } from "src/@core/layouts/types"
+
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
 
 
-export default function Map() {
+export default function Map({ cinemaData }: { cinemaData: Cinema[] }) {
 
-    const [office, setOffice] = useState<LatLngLiteral>()
     const mapRef = useRef<GoogleMap>()
     const center = useMemo<LatLngLiteral>(() => ({ lat: 52.5, lng: 21.5 }), [])
     const options = useMemo<MapOptions>(() => ({
@@ -24,9 +25,6 @@ export default function Map() {
         clickableIcons: false,
     }), [])
     const onLoad = useCallback(map => (mapRef.current = map), [])
-    useEffect(() => {
-        setOffice({ lat: 52.5, lng: 21.5 })
-    }, []);
 
     return (
         <Paper sx={{ width: '100%', height: '100%', overflow: 'hidden' }}>
@@ -37,7 +35,12 @@ export default function Map() {
                         mapContainerClassName="map-container"
                         options={options}
                         onLoad={onLoad}>
-                        {office && <Marker position={office} label="test" />}
+                        {cinemaData.map((singleMeal) => {
+                            const { location: location, name: name } = singleMeal
+                            return (
+                                <Marker position={location} label={name} />)
+                        }
+                        )}
                     </GoogleMap>
                 </div>
             </div>

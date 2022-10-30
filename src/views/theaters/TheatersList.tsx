@@ -9,8 +9,9 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 
+
 interface Column {
-  id: 'id' | 'name' | 'address' | 'phone' | 'email' | 'website' 
+  id: 'id' | 'name' | 'address' | 'phone' | 'email' | 'website'
   label: string
   minWidth?: number
   align?: 'right'
@@ -42,33 +43,7 @@ const columns: readonly Column[] = [
   }
 ]
 
-interface Data {
-  id: number
-  name: string
-  address: string
-  phone: string
-  email: string
-  website: string
-}
-
-function createData(  id: number, name: string, address: string, phone: string, email: string, website: string): Data {
-
-  return { id, name, address, phone, email, website }
-}
-
-const rows = [
-  createData(1, "test1", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/"),
-  createData(2, "test2", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/"),
-  createData(3, "test3", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/"),
-  createData(4, "test4", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/"),
-  createData(5, "test5", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/"),
-  createData(6, "test6", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/"),
-  createData(7, "test7", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/"),
-  createData(8, "test8", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/"),
-  createData(9, "test9", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/"),
-]
-
-const TheatersList = () => {
+const TheatersList = ({cinemaData}) => {
   // ** States
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
@@ -96,16 +71,16 @@ const TheatersList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+            {cinemaData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(cinemaData => {
               return (
-                <TableRow hover role='checkbox' tabIndex={-1} key={row.id}>
+                <TableRow hover role='checkbox' tabIndex={-1} key={cinemaData.id}>
                   {columns.map(column => {
-                    const value = row[column.id]
+                    const value = cinemaData[column.id]
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' 
-                        ? column.format(value) : column.id === "website" 
-                        ? <a href={value.toLocaleString()} target="_blank">{value}</a> : value}
+                        {column.format && typeof value === 'number'
+                          ? column.format(value) : column.id === "website"
+                            ? <a href={value.toLocaleString()} target="_blank">{value}</a> : value}
                       </TableCell>
                     )
                   })}
@@ -118,7 +93,7 @@ const TheatersList = () => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
-        count={rows.length}
+        count={cinemaData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

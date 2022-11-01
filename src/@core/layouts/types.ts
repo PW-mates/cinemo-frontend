@@ -66,3 +66,16 @@ export type User = {
   status: 'active' | 'inactive'
   role: 'admin' | 'user'
 }
+
+export type Movie = {
+  id: string
+  title: string
+  description: string
+  releaseDate: Date
+  duration: number
+  rating: number
+  posterPhoto: string
+  trailerUrl: string
+  showingFrom: Date
+  showingTo: Date
+}

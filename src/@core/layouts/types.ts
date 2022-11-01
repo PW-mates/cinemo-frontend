@@ -70,12 +70,14 @@ export type User = {
 export type Movie = {
   id: string
   title: string
-  description: string
-  releaseDate: Date
-  duration: number
-  rating: number
-  posterPhoto: string
-  trailerUrl: string
-  showingFrom: Date
-  showingTo: Date
+  description?: string
+  director?: string
+  distributor?: string
+  releaseDate?: Date
+  duration?: number
+  rating?: number
+  posterPhoto?: string
+  trailerUrl?: string
+  showingFrom?: Date
+  showingTo?: Date
 }

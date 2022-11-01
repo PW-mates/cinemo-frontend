@@ -67,6 +67,13 @@ export type User = {
   role: 'admin' | 'user'
 }
 
+export type MovieCategory = {
+  id: string
+  name: string
+  slug: string
+  movies?: Movie[]
+}
+
 export type Movie = {
   id: string
   title: string
@@ -80,4 +87,5 @@ export type Movie = {
   trailerUrl?: string
   showingFrom?: Date
   showingTo?: Date
+  category?: MovieCategory[]
 }

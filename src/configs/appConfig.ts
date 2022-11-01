@@ -1,4 +1,4 @@
-import { Movie, User } from 'src/@core/layouts/types'
+import { Movie, MovieCategory, User } from 'src/@core/layouts/types'
 
 type AppConfig = {
   endpoint: string
@@ -71,6 +71,87 @@ export namespace AccountUpdatePasswordEndpoint {
     success: boolean
     message: string
   }
+}
+
+export namespace MovieCategoryListEndpoint {
+  /**
+   * @description
+   * This endpoint is used to get list of movie categories.
+   */
+  export const path = '/movie-categories'
+  export const method = 'GET'
+
+  export type Request = {}
+  export type Response = {
+    success: boolean
+    message: string
+    data?: MovieCategory[]
+  }
+}
+
+export namespace MovieCategoryCreateEndpoint {
+  /**
+   * @description
+   * This endpoint is used to create new movie category.
+   */
+  export const path = '/movie-categories'
+  export const method = 'POST'
+
+  export type Request = {
+    name: string
+  }
+  export type Response = {
+    success: boolean
+    message: string
+    data?: MovieCategory
+  }
+}
+
+export namespace MovieCategoryGetEndpoint {
+  /**
+   * @description
+   * This endpoint is used to get movie category by id, include list of movies in this category.
+   */
+  export const path = '/movie-categories/:id'
+  export const method = 'GET'
+
+  export type Request = {
+    id: string
+  }
+  export type Response = {
+    success: boolean
+    message: string
+    data?: MovieCategory
+  }
+}
+
+export namespace MovieCategoryUpdateEndpoint {
+  /**
+   * @description
+   * This endpoint is used to update movie category.
+   * @param id - movie category id
+   */
+  export const path = '/movie-categories/:id'
+  export const method = 'PATCH'
+
+  export type Request = MovieCategory
+  export type Response = {
+    success: boolean
+    message: string
+    data?: MovieCategory
+  }
+}
+
+export namespace MovieCategoryDeleteEndpoint {
+  /**
+   * @description
+   * This endpoint is used to delete movie category.
+   * @param id - movie category id
+   * @param force - if true, then movie category will be deleted without checking if it is used in any movie
+   * @param force - if false, then movie category will be deleted only if it is not used in any movie
+   */
+  export const path = '/movie-categories/:id'
+  export const method = 'DELETE'
 }
 
 export namespace MovieListEndpoint {

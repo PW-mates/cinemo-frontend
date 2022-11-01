@@ -89,3 +89,78 @@ export type Movie = {
   showingTo?: Date
   category?: MovieCategory[]
 }
+
+export type Theater = {
+  id: string
+  name: string
+  address: string
+  city: string
+  country: string
+  latitude: number
+  longitude: number
+  phone: string
+  email: string
+  website: string
+  manager: User
+}
+
+export type Room = {
+  id: string
+  name: string
+  seatsCount: number
+  theater: Theater
+  numberOfRows: number
+  seatsPerRow: number
+}
+
+export type SeatType = {
+  id: string
+  name: string
+}
+
+export type Seat = {
+  id: string
+  row: number
+  column: number
+  room: Room
+  type: SeatType
+}
+
+export type Screening = {
+  id: string
+  movie: Movie
+  room: Room
+  theater: Theater
+  openSale: Date
+  date: Date
+}
+
+export type Ticket = {
+  id: string
+  code: string // Random generated code when ticket is created
+  screening: Screening
+  seat?: Seat[]
+  seller: User
+  totalPrice: number
+  createdAt: Date
+  paymentMethod: 'cash' | 'card'
+  paymentId: string
+  status: 'new' | 'paid' | 'cancelled' | 'used' | 'expired'
+}
+
+export type TicketType = {
+  id: string
+  name: string
+  seatType: SeatType
+  price: number
+  description?: string
+}
+
+export type Payment = {
+  id: string
+  amount: number
+  currency: string
+  status: 'unpaid' | 'paid' | 'cancelled'
+  paymentMethod: 'cash' | 'card'
+  reference: string
+}

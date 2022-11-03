@@ -22,3 +22,8 @@ code:not([class*='language-']):after {
 code[class*='language-'] {
   padding: 0;
 }
+
+.map-container {
+  display: flex;
+  height: 70vh;
+}

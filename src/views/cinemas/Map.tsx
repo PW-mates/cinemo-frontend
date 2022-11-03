@@ -8,6 +8,7 @@ import {
 } from "@react-google-maps/api";
 
 import Paper from '@mui/material/Paper'
+import { useTheme } from '@mui/material/styles';
 
 import { Cinema } from "src/@core/layouts/types"
 
@@ -17,33 +18,30 @@ type MapOptions = google.maps.MapOptions;
 
 export default function Map({ cinemaData }: { cinemaData: Cinema[] }) {
 
-    const mapRef = useRef<GoogleMap>()
+    const theme = useTheme();
+    var mapRef = useRef<GoogleMap>()
     const center = useMemo<LatLngLiteral>(() => ({ lat: 52.5, lng: 21.5 }), [])
     const options = useMemo<MapOptions>(() => ({
-        mapId: "4ffc7dd2f7414b26",
+        mapId: theme.palette.mode === "light"? "b56236acd485ce65":"4ffc7dd2f7414b26",
         disableDafaultUI: true,
         clickableIcons: false,
-    }), [])
-    const onLoad = useCallback(map => (mapRef.current = map), [])
+    }), [theme.palette.mode])
+    const onLoad = useCallback(map => (mapRef.current = map), [theme.palette.mode])
 
     return (
         <Paper sx={{ width: '100%', height: '100%', overflow: 'hidden' }}>
-            <div className="container">
-                <div className="map">
-                    <GoogleMap zoom={8}
-                        center={center}
-                        mapContainerClassName="map-container"
-                        options={options}
-                        onLoad={onLoad}>
-                        {cinemaData.map((singleMeal) => {
-                            const { location: location, name: name } = singleMeal
-                            return (
-                                <Marker position={location} label={name} />)
-                        }
-                        )}
-                    </GoogleMap>
-                </div>
-            </div>
+            <GoogleMap zoom={8}
+                center={center}
+                mapContainerClassName="map-container"
+                options={options}
+                onLoad={onLoad}>
+                {cinemaData.map((singleCinema) => {
+                    const {id: id, location: location, name: name } = singleCinema
+                    return (
+                        <Marker key={id} position={location} label={name} />)
+                }
+                )}
+            </GoogleMap>
         </Paper>
     )
 }

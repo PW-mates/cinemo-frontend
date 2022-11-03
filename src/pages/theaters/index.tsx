@@ -1,14 +1,12 @@
-// ** MUI Imports
-import Grid from '@mui/material/Grid'
+import { useState, useEffect } from 'react';
 
+import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
+import { Cinema } from "src/@core/layouts/types"
 
 import { useLoadScript } from "@react-google-maps/api";
 
-import { useState, useEffect } from 'react';
-
-import { Cinema } from "src/@core/layouts/types"
 import CinemasList from 'src/views/cinemas/CinemasList'
 import Map from 'src/views/cinemas/Map'
 
@@ -68,7 +66,7 @@ const Cinemas = () => {
       <Grid item xs={16}>
         <Card>
           <CardHeader title='Cinemas' titleTypographyProps={{ variant: 'h6' }} />
-          <CinemasList cinemaData={cinemasData} />
+          <CinemasList cinemasData={cinemasData} />
         </Card>
       </Grid>
       <Grid item xs={16}>

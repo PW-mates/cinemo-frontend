@@ -8,8 +8,10 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-
+import Link from "@mui/material/Link"
 import { Cinema } from "src/@core/layouts/types"
+
+import CinemaInfo from "./CinemaInfo"
 
 
 interface Column {
@@ -45,10 +47,26 @@ const columns: readonly Column[] = [
   }
 ]
 
-const CinemasList = ({cinemaData}: {cinemaData: Cinema[]}) => {
-  // ** States
+const CinemasList = ({ cinemasData }: { cinemasData: Cinema[] }) => {
+
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
+  const [showCinemaInfo, setShowCinemaInfo] = useState(false)
+  const [selectedCinema, setSelectedCinema] = useState<Cinema>()
+
+  const selectCinema = (id: Cinema["id"], event: ChangeEvent<any>) => {
+    if (!event.target.href) {
+      let cinema;
+      cinema = cinemasData.find((cinema) => cinema.id === id)
+
+      setSelectedCinema(cinema)
+      setShowCinemaInfo(true)
+    }
+  }
+
+  const closeCinemaInfo = () => {
+    setShowCinemaInfo(false)
+  }
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -73,16 +91,16 @@ const CinemasList = ({cinemaData}: {cinemaData: Cinema[]}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cinemaData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(cinemaData => {
+            {cinemasData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(cinema => {
               return (
-                <TableRow hover role='checkbox' tabIndex={-1} key={cinemaData.id}>
+                <TableRow hover role='checkbox' tabIndex={-1} key={cinema.id} onClick={(e) => selectCinema(cinema.id, e)}>
                   {columns.map(column => {
-                    const value = cinemaData[column.id]
+                    const value = cinema[column.id]
                     return (
-                      <TableCell key={column.id} align={column.align}>
+                      <TableCell key={column.id} align={column.align} >
                         {column.format && typeof value === 'number'
                           ? column.format(value) : column.id === "website"
-                            ? <a href={value.toLocaleString()} target="_blank">{value}</a> : value}
+                            ? <Link href={value.toLocaleString()} target="_blank" >{value}</Link> : value}
                       </TableCell>
                     )
                   })}
@@ -95,12 +113,13 @@ const CinemasList = ({cinemaData}: {cinemaData: Cinema[]}) => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
-        count={cinemaData.length}
+        count={cinemasData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      {showCinemaInfo && <CinemaInfo selectedCinema={selectedCinema} closeCinemaInfo={closeCinemaInfo} />}
     </Paper>
   )
 }

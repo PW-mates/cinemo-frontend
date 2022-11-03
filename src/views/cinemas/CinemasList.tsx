@@ -9,7 +9,7 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import Link from "@mui/material/Link"
-import { Cinema } from "src/@core/layouts/types"
+import { Theater } from "src/@core/layouts/types"
 
 import CinemaInfo from "./CinemaInfo"
 
@@ -47,14 +47,14 @@ const columns: readonly Column[] = [
   }
 ]
 
-const CinemasList = ({ cinemasData }: { cinemasData: Cinema[] }) => {
+const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
 
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
   const [showCinemaInfo, setShowCinemaInfo] = useState(false)
-  const [selectedCinema, setSelectedCinema] = useState<Cinema>()
+  const [selectedCinema, setSelectedCinema] = useState<Theater>()
 
-  const selectCinema = (id: Cinema["id"], event: ChangeEvent<any>) => {
+  const selectCinema = (id: Theater["id"], event: ChangeEvent<any>) => {
     if (!event.target.href) {
       let cinema;
       cinema = cinemasData.find((cinema) => cinema.id === id)

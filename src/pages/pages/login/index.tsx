@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
+import Slide from '@mui/material/Slide'
 import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import InputLabel from '@mui/material/InputLabel'
@@ -17,6 +18,7 @@ import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
+import Snackbar from '@mui/material/Snackbar'
 import { styled, useTheme } from '@mui/material/styles'
 import MuiCard, { CardProps } from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -34,10 +36,14 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
 import { useSettings } from 'src/@core/hooks/useSettings'
+import useFetch from 'src/@core/utils/use-fetch'
+import { AccountInfoEndpoint, AccountLoginEndpoint } from 'src/configs/appConfig'
+import { Children } from 'react'
+import { useEffect } from 'react'
 
 interface State {
+  username: string
   password: string
   showPassword: boolean
 }
@@ -63,8 +69,13 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 const LoginPage = () => {
   // ** State
   const [values, setValues] = useState<State>({
+    username: '',
     password: '',
     showPassword: false
+  })
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: ''
   })
   const { settings, saveSettings } = useSettings()
 
@@ -80,9 +91,44 @@ const LoginPage = () => {
     setValues({ ...values, showPassword: !values.showPassword })
   }
 
-  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (event: any) => {
     event.preventDefault()
   }
+
+  const handleKeyDown = (event: any) => {
+    if (event.key === 'Enter') {
+      handleLogin(event)
+    }
+  }
+
+  const { fetchData, response, error, loading } = useFetch()
+  const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const data: AccountLoginEndpoint.Request = {
+      username: values.username,
+      password: values.password
+    }
+    const res = await fetchData(AccountLoginEndpoint.method, AccountLoginEndpoint.path, {}, data)
+    setSnackbar({ open: true, message: res?.message })
+    if (res && res.success) {
+      if (res.data) {
+        saveSettings({ ...settings, user: res.data })
+        router.push('/')
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (settings.user && settings.user.access_token) {
+      // router.push('/')
+      fetchData(AccountInfoEndpoint.method, AccountInfoEndpoint.path).then(res => {
+        if (res && res.success) {
+          saveSettings({ ...settings, user: { ...res.data, access_token: settings?.user?.access_token } })
+          router.push('/')
+        }
+      })
+    }
+  }, [router, settings])
 
   return (
     <Box className='content-center'>
@@ -110,7 +156,18 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField
+              onChange={handleChange('username')}
+              autoFocus
+              fullWidth
+              id='username'
+              label='Username'
+              sx={{ marginBottom: 4 }}
+              onKeyDown={handleKeyDown}
+              inputProps={{
+                minLength: 5
+              }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -119,6 +176,7 @@ const LoginPage = () => {
                 id='auth-login-password'
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
+                onKeyDown={handleKeyDown}
                 endAdornment={
                   <InputAdornment position='end'>
                     <IconButton
@@ -142,14 +200,16 @@ const LoginPage = () => {
               </Link>
             </Box>
             <Button
+              disabled={loading}
               fullWidth
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
+              onClick={e => handleLogin(e)}
             >
               Login
             </Button>
+            <Snackbar open={snackbar.open} autoHideDuration={3000} message={snackbar.message} />
           </form>
         </CardContent>
       </Card>

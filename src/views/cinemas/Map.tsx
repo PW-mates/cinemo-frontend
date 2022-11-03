@@ -10,13 +10,13 @@ import {
 import Paper from '@mui/material/Paper'
 import { useTheme } from '@mui/material/styles';
 
-import { Cinema } from "src/@core/layouts/types"
+import { Theater } from "src/@core/layouts/types"
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 type MapOptions = google.maps.MapOptions;
 
 
-export default function Map({ cinemaData }: { cinemaData: Cinema[] }) {
+export default function Map({ cinemaData }: { cinemaData: Theater[] }) {
 
     const theme = useTheme();
     var mapRef = useRef<GoogleMap>()
@@ -36,7 +36,8 @@ export default function Map({ cinemaData }: { cinemaData: Cinema[] }) {
                 options={options}
                 onLoad={onLoad}>
                 {cinemaData.map((singleCinema) => {
-                    const {id: id, location: location, name: name } = singleCinema
+                    const {id: id, latitude: latitude, longitude: longitude, name: name } = singleCinema
+                    const location: LatLngLiteral = { lat: latitude, lng: longitude}
                     return (
                         <Marker key={id} position={location} label={name} />)
                 }

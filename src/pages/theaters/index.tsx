@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
-import { Cinema } from "src/@core/layouts/types"
+import { Theater } from "src/@core/layouts/types"
+import { User } from "src/@core/layouts/types"
 
 import { useLoadScript } from "@react-google-maps/api";
 
@@ -13,27 +14,42 @@ import Map from 'src/views/cinemas/Map'
 
 const Cinemas = () => {
 
-  const [cinemasData, setCinemasData] = useState<Cinema[]>([])
+  const [cinemasData, setCinemasData] = useState<Theater[]>([])
 
   // ToDo tmp function
-  function createData(id: Cinema["id"], name: Cinema["name"], 
-  address: Cinema["address"], phone: Cinema["phone"], email: Cinema["email"], 
-  website: Cinema["website"], location: Cinema["location"]): Cinema {
+  function createData(id: Theater["id"], name: Theater["name"], 
+  address: Theater["address"], phone: Theater["phone"], email: Theater["email"], 
+  website: Theater["website"], latitude: Theater["latitude"], longitude: Theater["longitude"],
+  city: Theater["city"], country: Theater["country"], manager: Theater["manager"]): Theater {
 
-    return { id, name, address, phone, email, website, location }
+    return { id, name, address, phone, email, website, latitude,  longitude, city, country, manager}
   }
 
+  // tmp
+  const manager: User ={
+    id: "1",
+    access_token: "001",
+    gender: 'male',
+    createdAt: new Date(2022, 10),
+    email: "test@gmail",
+    firstName: "T",
+    lastName: "est",
+    updatedAt: new Date(2022, 11),
+    username: "username",
+    status: 'inactive',
+    role: 'user',
+  }
   // ToDo tmp 
-  const rows: Cinema[] = [
-    createData(1, "test1", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", { lat: 52.5, lng: 21.5 }),
-    createData(2, "test2", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", { lat: 40, lng: 20 }),
-    createData(3, "test3", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", { lat: 57, lng: 23 }),
-    createData(4, "test4", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", { lat: 50, lng: 20 }),
-    createData(5, "test5", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", { lat: 51, lng: 20.5 }),
-    createData(6, "test6", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", { lat: 60, lng: 60 }),
-    createData(7, "test7", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", { lat: 60, lng: 60 }),
-    createData(8, "test8", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", { lat: 60, lng: 60 }),
-    createData(9, "test9", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", { lat: 60, lng: 60 }),
+  const rows: Theater[] = [
+    createData("1", "test1", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", 52.5, 21.5, "Warsaw", "Poland", manager ),
+    createData("2", "test2", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", 40, 20, "Warsaw", "Poland", manager ),
+    createData("3", "test3", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", 57, 23, "Warsaw", "Poland", manager ),
+    createData("4", "test4", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", 50, 20, "Warsaw", "Poland", manager ),
+    createData("5", "test5", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", 51, 20.5, "Warsaw", "Poland", manager ),
+    createData("6", "test6", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", 60, 60, "Warsaw", "Poland", manager ),
+    createData("7", "test7", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", 60, 60, "Warsaw", "Poland", manager ),
+    createData("8", "test8", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", 60, 60, "Warsaw", "Poland", manager ),
+    createData("9", "test9", "addres string", "phone string", "email string", "https://www.cinema-city.pl/kina/arkadia/1074#/", 60, 60, "Warsaw", "Poland", manager ),
   ]
 
   const fetchCinemaData = async () => {

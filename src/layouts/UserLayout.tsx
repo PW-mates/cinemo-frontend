@@ -27,9 +27,10 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
-  
+
   useEffect(() => {
-    if (!settings.user) {
+    console.log(settings)
+    if (settings && settings.loaded && !settings.user) {
       router.push('/pages/login', undefined, { shallow: true })
     }
   }, [settings])
@@ -44,7 +45,7 @@ const UserLayout = ({ children }: Props) => {
    */
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
 
-  return settings.user ? (
+  return settings.loaded && settings.user?.access_token ? (
     <VerticalLayout
       hidden={hidden}
       settings={settings}

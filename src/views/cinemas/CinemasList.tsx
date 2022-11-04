@@ -8,11 +8,10 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import Link from "@mui/material/Link"
-import { Theater } from "src/@core/layouts/types"
+import Link from '@mui/material/Link'
+import { Theater } from 'src/@core/layouts/types'
 
-import CinemaInfo from "./CinemaInfo"
-
+import CinemaInfo from './CinemaInfo'
 
 interface Column {
   id: 'id' | 'name' | 'address' | 'phone' | 'email' | 'website'
@@ -48,16 +47,15 @@ const columns: readonly Column[] = [
 ]
 
 const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
-
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
   const [showCinemaInfo, setShowCinemaInfo] = useState(false)
   const [selectedCinema, setSelectedCinema] = useState<Theater>()
 
-  const selectCinema = (id: Theater["id"], event: ChangeEvent<any>) => {
+  const selectCinema = (id: Theater['id'], event: ChangeEvent<any>) => {
     if (!event.target.href) {
-      let cinema;
-      cinema = cinemasData.find((cinema) => cinema.id === id)
+      let cinema
+      cinema = cinemasData.find(cinema => cinema.id === id)
 
       setSelectedCinema(cinema)
       setShowCinemaInfo(true)
@@ -93,14 +91,21 @@ const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
           <TableBody>
             {cinemasData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(cinema => {
               return (
-                <TableRow hover role='checkbox' tabIndex={-1} key={cinema.id} onClick={(e) => selectCinema(cinema.id, e)}>
+                <TableRow hover role='checkbox' tabIndex={-1} key={cinema.id} onClick={e => selectCinema(cinema.id, e)}>
                   {columns.map(column => {
                     const value = cinema[column.id]
+
                     return (
-                      <TableCell key={column.id} align={column.align} >
-                        {column.format && typeof value === 'number'
-                          ? column.format(value) : column.id === "website"
-                            ? <Link href={value.toLocaleString()} target="_blank" >{value}</Link> : value}
+                      <TableCell key={column.id} align={column.align}>
+                        {column.format && typeof value === 'number' ? (
+                          column.format(value)
+                        ) : column.id === 'website' ? (
+                          <Link href={value.toLocaleString()} target='_blank'>
+                            {value}
+                          </Link>
+                        ) : (
+                          value
+                        )}
                       </TableCell>
                     )
                   })}

@@ -103,6 +103,7 @@ export type Theater = {
   website: string
   manager: User
 }
+export type LatLngLiteral = google.maps.LatLngLiteral;
 
 export type Room = {
   id: string

@@ -31,6 +31,7 @@
     "@mui/lab": "^5.0.0-alpha.70",
     "@mui/material": "^5.4.3",
     "@popperjs/core": "^2.11.2",
+    "@react-google-maps/api": "^2.13.1",
     "apexcharts-clevision": "3.28.5",
     "clsx": "^1.1.1",
     "mdi-material-ui": "^7.1.0",

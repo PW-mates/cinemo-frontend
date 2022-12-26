@@ -47,7 +47,7 @@ export type BlankLayoutProps = {
 
 export type UserRole = {
   id: number,
-  name: string,
+  name?: string,
 }
 
 export type User = {

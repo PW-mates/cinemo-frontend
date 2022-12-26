@@ -43,7 +43,11 @@ const Cinemas = () => {
     updatedAt: new Date(2022, 11),
     username: 'username',
     status: 'inactive',
-    role: 'user'
+    roles: [
+      { 
+        id: 2
+      }
+    ]
   }
   // ToDo tmp
   const rows: Theater[] = [

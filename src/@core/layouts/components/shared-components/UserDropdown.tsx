@@ -80,10 +80,10 @@ const UserDropdown = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <Avatar
-          alt='John Doe'
+          alt={settings.user?.firstName + ' ' + settings.user?.lastName}
+          src={settings.user?.profilePicture || '/images/avatars/1.png' }
           onClick={handleDropdownOpen}
           sx={{ width: 40, height: 40 }}
-          src='/images/avatars/1.png'
         />
       </Badge>
       <Menu
@@ -104,7 +104,7 @@ const UserDropdown = () => {
               >
                 <Avatar
                   alt={settings.user?.firstName + ' ' + settings.user?.lastName}
-                  src='/images/avatars/1.png'
+                  src={settings.user?.profilePicture || '/images/avatars/1.png' }
                   sx={{ width: '2.5rem', height: '2.5rem' }}
                 />
               </Badge>
@@ -120,7 +120,7 @@ const UserDropdown = () => {
           </Box>
         ) : null}
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/account-settings')}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
             Profile

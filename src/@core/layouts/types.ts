@@ -45,10 +45,15 @@ export type BlankLayoutProps = {
   children: ReactNode
 }
 
+export type UserRole = {
+  id: number,
+  name: string,
+}
+
 export type User = {
   id: string
-  access_token: string
-  birthDate?: Date
+  access_token?: string
+  birthDate?: number
   country?: string
   gender: 'male' | 'female' | 'other'
   bio?: string
@@ -64,7 +69,7 @@ export type User = {
   profilePicture?: string
   cinema?: any
   status: 'active' | 'inactive'
-  role: 'admin' | 'user'
+  roles?: UserRole[]
 }
 
 export type MovieCategory = {

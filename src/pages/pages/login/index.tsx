@@ -120,7 +120,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (settings.user && settings.user.access_token) {
-      // router.push('/')
       fetchData(AccountInfoEndpoint.method, AccountInfoEndpoint.path).then(res => {
         if (res && res.success) {
           saveSettings({ ...settings, user: { ...res.data, access_token: settings?.user?.access_token } })
@@ -209,7 +208,15 @@ const LoginPage = () => {
             >
               Login
             </Button>
-            <Snackbar open={snackbar.open} autoHideDuration={3000} message={snackbar.message} />
+            <Snackbar
+              open={snackbar.open}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center'
+              }}
+              autoHideDuration={3000}
+              message={snackbar.message}
+            />
           </form>
         </CardContent>
       </Card>

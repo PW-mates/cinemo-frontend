@@ -59,7 +59,7 @@ const TabInfo = () => {
         ...settings.user,
         access_token: undefined
       })
-      setDate((settings.user.birthDate) ? new Date(settings.user.birthDate * 1000) : new Date())
+      setDate(settings.user.birthDate ? new Date(settings.user.birthDate * 1000) : new Date())
     }
   }, [settings.user, values])
 
@@ -133,7 +133,7 @@ const TabInfo = () => {
               <InputLabel id='form-layouts-separator-multiple-select-label'>Languages</InputLabel>
               <Select
                 multiple
-                defaultValue={values?.language?.split(',')}
+                defaultValue={(values?.language || '').split(',')}
                 onChange={e => setValues({ ...values, language: [...e.target.value].join(',') })}
                 id='account-settings-multiple-select'
                 labelId='account-settings-multiple-select-label'

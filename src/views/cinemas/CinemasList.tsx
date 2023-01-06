@@ -46,7 +46,7 @@ const columns: readonly Column[] = [
   }
 ]
 
-const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
+const CinemasList = ({ cinemasData, updatedCinemaInfo }: { cinemasData: Theater[], updatedCinemaInfo: any }) => {
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
   const [showCinemaInfo, setShowCinemaInfo] = useState(false)
@@ -54,8 +54,7 @@ const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
 
   const selectCinema = (id: Theater['id'], event: ChangeEvent<any>) => {
     if (!event.target.href) {
-      let cinema
-      cinema = cinemasData.find(cinema => cinema.id === id)
+      const cinema = cinemasData.find(cinema => cinema.id === id)
 
       setSelectedCinema(cinema)
       setShowCinemaInfo(true)
@@ -65,6 +64,8 @@ const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
   const closeCinemaInfo = () => {
     setShowCinemaInfo(false)
   }
+
+
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -100,7 +101,7 @@ const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
                         {column.format && typeof value === 'number' ? (
                           column.format(value)
                         ) : column.id === 'website' ? (
-                          <Link href={value.toLocaleString()} target='_blank'>
+                          <Link href={value} target='_blank'>
                             {value}
                           </Link>
                         ) : (
@@ -124,7 +125,7 @@ const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {showCinemaInfo && <CinemaInfo selectedCinema={selectedCinema} closeCinemaInfo={closeCinemaInfo} />}
+      {showCinemaInfo && selectedCinema && <CinemaInfo selectedCinema={selectedCinema} closeCinemaInfo={closeCinemaInfo} updatedCinemaInfo={updatedCinemaInfo} />}
     </Paper>
   )
 }

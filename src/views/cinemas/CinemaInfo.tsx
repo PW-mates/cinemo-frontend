@@ -8,7 +8,7 @@ import { Grid, TextField } from '@mui/material'
 import { Theater } from 'src/@core/layouts/types'
 import { useState } from 'react'
 import useFetch from 'src/@core/utils/use-fetch'
-import { TheaterCreateEndpoint, TheaterUpdateEndpoint } from 'src/configs/appConfig'
+import { TheaterCreateEndpoint, TheaterDeleteEndpoint, TheaterUpdateEndpoint } from 'src/configs/appConfig'
 
 const CinemaDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -36,6 +36,17 @@ const CinemaInfo = ({
       ? TheaterUpdateEndpoint.path.replace(':id', cinemaInfo.id.toString())
       : TheaterCreateEndpoint.path
     const method = selectedCinema.id ? TheaterUpdateEndpoint.method : TheaterCreateEndpoint.method
+    fetchData(method, path, undefined, cinemaInfo).then(res => {
+      if (res && res.success) {
+        updatedCinemaInfo()
+        closeCinemaInfo()
+      }
+    })
+  }
+
+  const deleteCinemaInfo = () => {
+    const path = TheaterDeleteEndpoint.path.replace(':id', cinemaInfo.id.toString())
+    const method = TheaterDeleteEndpoint.method;
     fetchData(method, path, undefined, cinemaInfo).then(res => {
       if (res && res.success) {
         updatedCinemaInfo()
@@ -185,6 +196,9 @@ const CinemaInfo = ({
         </Grid>
       </DialogContent>
       <DialogActions>
+        <Button autoFocus type='submit' variant='outlined' color='error' size='medium' onClick={deleteCinemaInfo}>
+          Delete
+        </Button>
         <Button autoFocus type='submit' variant='contained' size='large' onClick={saveCinemaInfo}>
           Save
         </Button>

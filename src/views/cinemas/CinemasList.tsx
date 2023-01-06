@@ -101,7 +101,7 @@ const CinemasList = ({ cinemasData, updatedCinemaInfo }: { cinemasData: Theater[
                         {column.format && typeof value === 'number' ? (
                           column.format(value)
                         ) : column.id === 'website' ? (
-                          <Link href={value.toLocaleString()} target='_blank'>
+                          <Link href={value} target='_blank'>
                             {value}
                           </Link>
                         ) : (

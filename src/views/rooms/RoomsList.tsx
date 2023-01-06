@@ -11,9 +11,10 @@ import TablePagination from '@mui/material/TablePagination'
 import Link from '@mui/material/Link'
 import { Room } from 'src/@core/layouts/types'
 
-import { IconButton } from '@mui/material'
+import { Dialog, DialogTitle, IconButton } from '@mui/material'
 import { EyeOutline } from 'mdi-material-ui'
 import RoomInfo from './RoomInfo'
+import SeatsMap from './SeatsMap'
 
 interface Column {
   id: 'id' | 'name' | 'cinemaName' | 'seatsCount' | 'numberOfRows' | 'seatsPerRow'
@@ -49,6 +50,7 @@ const RoomsList = ({ roomsData, updatedRoomInfo }: { roomsData: Room[]; updatedR
   const queryParams = new URLSearchParams(window.location.search)
   const [showRoomInfo, setShowRoomInfo] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState<Room>()
+  const [showSeatsMap, setShowSeatsMap] = useState(false)
 
   const selectRoom = (id: Room['id'], event: ChangeEvent<any>) => {
     if (!event.target.href) {
@@ -72,6 +74,16 @@ const RoomsList = ({ roomsData, updatedRoomInfo }: { roomsData: Room[]; updatedR
     setPage(0)
   }
 
+  const showSeats = (id: Room['id'], event: ChangeEvent<any>) => {
+    if (!event.target.href) {
+      const room = roomsData.find(room => room.id === id)
+
+      setSelectedRoom(room)
+      console.log(room)
+      setShowSeatsMap(true)
+    }
+  }
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -91,35 +103,36 @@ const RoomsList = ({ roomsData, updatedRoomInfo }: { roomsData: Room[]; updatedR
             </TableRow>
           </TableHead>
           <TableBody>
-            {roomsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).filter((row) => {
+            {roomsData
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .filter(row => {
                 const cinemaId = queryParams.get('cinemaId')
-    
-                return cinemaId ? row.theater.id == cinemaId : true
-            }).map(room => {
-              return (
-                <TableRow hover role='checkbox' tabIndex={-1} key={room.id}>
-                  {[
-                    ...columns.map(column => {
-                      const columnId = column.id
-                      const value = columnId != 'cinemaName' ? room[columnId] : room.theater.name
 
-                      return (
-                        <TableCell key={column.id} align={column.align} onClick={e => selectRoom(room.id, e)}>
-                          {column.format && typeof value === 'number' ? column.format(value) : value}
-                        </TableCell>
-                      )
-                    }),
-                    <TableCell key='actions' align='right'>
-                      <Link href={`/seats?roomId=${room.id}`}>
-                        <IconButton>
+                return cinemaId ? row.theater.id == cinemaId : true
+              })
+              .map(room => {
+                return (
+                  <TableRow hover role='checkbox' tabIndex={-1} key={room.id}>
+                    {[
+                      ...columns.map(column => {
+                        const columnId = column.id
+                        const value = columnId != 'cinemaName' ? room[columnId] : room.theater.name
+
+                        return (
+                          <TableCell key={column.id} align={column.align} onClick={e => selectRoom(room.id, e)}>
+                            {column.format && typeof value === 'number' ? column.format(value) : value}
+                          </TableCell>
+                        )
+                      }),
+                      <TableCell key='actions' align='right'>
+                        <IconButton onClick={e => showSeats(room.id, e)}>
                           <EyeOutline />
                         </IconButton>
-                      </Link>
-                    </TableCell>
-                  ]}
-                </TableRow>
-              )
-            })}
+                      </TableCell>
+                    ]}
+                  </TableRow>
+                )
+              })}
           </TableBody>
         </Table>
       </TableContainer>
@@ -133,12 +146,21 @@ const RoomsList = ({ roomsData, updatedRoomInfo }: { roomsData: Room[]; updatedR
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       {showRoomInfo && selectedRoom && (
-        <RoomInfo
-          selectedRoom={selectedRoom}
-          closeRoomInfo={closeRoomInfo}
-          updatedRoomInfo={updatedRoomInfo}
-        />
+        <RoomInfo selectedRoom={selectedRoom} closeRoomInfo={closeRoomInfo} updatedRoomInfo={updatedRoomInfo} />
       )}
+      <Dialog
+        open={showSeatsMap}
+        fullWidth
+        maxWidth='lg'
+        onClose={() => {
+          setShowSeatsMap(false)
+        }}
+      >
+        <DialogTitle>{selectedRoom && selectedRoom.id ? selectedRoom.name : ''}</DialogTitle>
+        {showSeatsMap && selectedRoom ? (
+          <SeatsMap selectedRoom={selectedRoom} closedSeatsMap={() => setShowSeatsMap(false)} />
+        ) : null}
+      </Dialog>
     </Paper>
   )
 }

@@ -1,4 +1,4 @@
-import { Movie, MovieCategory, Room, Screening, Seat, ShortUser, Theater, User } from 'src/@core/layouts/types'
+import { Movie, MovieCategory, Room, Screening, Seat, SeatType, ShortUser, Theater, User } from 'src/@core/layouts/types'
 
 type AppConfig = {
   endpoint: string
@@ -454,6 +454,22 @@ export namespace RoomDeleteEndpoint {
   export type Response = {
     success: boolean
     message: string
+  }
+}
+
+export namespace SeatTypeListEndpoint {
+  /**
+   * @description
+   * This endpoint is used to get list of seat types.
+   */
+  export const path = '/seat-types'
+  export const method = 'GET'
+
+  export type Request = {}
+  export type Response = {
+    success: boolean
+    message: string
+    data?: SeatType[]
   }
 }
 

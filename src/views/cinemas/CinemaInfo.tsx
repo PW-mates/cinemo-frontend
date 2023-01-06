@@ -4,11 +4,16 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import { Grid, TextField } from '@mui/material'
-import { Theater } from 'src/@core/layouts/types'
-import { useState } from 'react'
+import { Grid, MenuItem, Select, TextField } from '@mui/material'
+import { ShortUser, Theater } from 'src/@core/layouts/types'
+import { useEffect, useState } from 'react'
 import useFetch from 'src/@core/utils/use-fetch'
-import { TheaterCreateEndpoint, TheaterDeleteEndpoint, TheaterUpdateEndpoint } from 'src/configs/appConfig'
+import {
+  AccountListEndpoint,
+  TheaterCreateEndpoint,
+  TheaterDeleteEndpoint,
+  TheaterUpdateEndpoint
+} from 'src/configs/appConfig'
 
 const CinemaDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -30,6 +35,7 @@ const CinemaInfo = ({
 }) => {
   const { name: name } = selectedCinema
   const [cinemaInfo, setCinemaInfo] = useState<Theater>(selectedCinema)
+  const [users, setUsers] = useState<ShortUser[]>([])
   const { fetchData, response, error, loading } = useFetch()
   const saveCinemaInfo = () => {
     const path = selectedCinema.id
@@ -46,7 +52,7 @@ const CinemaInfo = ({
 
   const deleteCinemaInfo = () => {
     const path = TheaterDeleteEndpoint.path.replace(':id', cinemaInfo.id.toString())
-    const method = TheaterDeleteEndpoint.method;
+    const method = TheaterDeleteEndpoint.method
     fetchData(method, path, undefined, cinemaInfo).then(res => {
       if (res && res.success) {
         updatedCinemaInfo()
@@ -54,6 +60,21 @@ const CinemaInfo = ({
       }
     })
   }
+
+  const getUsers = async () => {
+    const response = await fetchData(AccountListEndpoint.method, AccountListEndpoint.path)
+    if (response && response.success) {
+      return response.data
+    }
+  }
+
+  useEffect(() => {
+    if (!users.length) {
+      getUsers().then(data => {
+        setUsers(data)
+      })
+    }
+  }, [users])
 
   return (
     <CinemaDialog onClose={closeCinemaInfo} aria-labelledby='customized-dialog-title' open={true}>
@@ -178,7 +199,7 @@ const CinemaInfo = ({
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <Select
               fullWidth
               label='Manager ID'
               value={cinemaInfo.manager?.id || ''}
@@ -191,7 +212,13 @@ const CinemaInfo = ({
                   }
                 })
               }
-            />
+            >
+              {users.map(user => (
+                <MenuItem key={user.id} value={user.id}>
+                  {user.firstName} {user.lastName}
+                </MenuItem>
+              ))}
+            </Select>
           </Grid>
         </Grid>
       </DialogContent>

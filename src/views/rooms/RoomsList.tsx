@@ -9,17 +9,17 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
 import Link from '@mui/material/Link'
-import { Theater } from 'src/@core/layouts/types'
+import { Room } from 'src/@core/layouts/types'
 
-import CinemaInfo from './CinemaInfo'
 import { IconButton } from '@mui/material'
 import { EyeOutline } from 'mdi-material-ui'
+import RoomInfo from './RoomInfo'
 
 interface Column {
-  id: 'id' | 'name' | 'address' | 'phone' | 'email' | 'website'
+  id: 'id' | 'name' | 'cinemaName' | 'seatsCount' | 'numberOfRows' | 'seatsPerRow'
   label: string
   minWidth?: number
-  align?: 'right'
+  align?: 'right' | 'center' | 'left'
   format?: (value: number) => string
 }
 
@@ -31,40 +31,36 @@ const columns: readonly Column[] = [
     align: 'right',
     format: (value: number) => value.toLocaleString('en-US')
   },
+  { id: 'cinemaName', label: 'Cinema', minWidth: 100 },
   { id: 'name', label: 'Name', minWidth: 100 },
-  { id: 'address', label: 'Address', minWidth: 170 },
   {
-    id: 'phone',
-    label: 'Phone',
+    id: 'seatsCount',
+    label: 'Seats count',
     minWidth: 100,
-    align: 'right'
+    align: 'center'
   },
-  { id: 'email', label: 'Email', minWidth: 170 },
-  {
-    id: 'website',
-    label: 'Website',
-    minWidth: 170,
-    align: 'right'
-  }
+  { id: 'numberOfRows', label: 'Rows', minWidth: 30, align: 'center' },
+  { id: 'seatsPerRow', label: 'Columns', minWidth: 30, align: 'center' }
 ]
 
-const CinemasList = ({ cinemasData, updatedCinemaInfo }: { cinemasData: Theater[]; updatedCinemaInfo: any }) => {
+const RoomsList = ({ roomsData, updatedRoomInfo }: { roomsData: Room[]; updatedRoomInfo: any }) => {
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
-  const [showCinemaInfo, setShowCinemaInfo] = useState(false)
-  const [selectedCinema, setSelectedCinema] = useState<Theater>()
+  const queryParams = new URLSearchParams(window.location.search)
+  const [showRoomInfo, setShowRoomInfo] = useState(false)
+  const [selectedRoom, setSelectedRoom] = useState<Room>()
 
-  const selectCinema = (id: Theater['id'], event: ChangeEvent<any>) => {
+  const selectRoom = (id: Room['id'], event: ChangeEvent<any>) => {
     if (!event.target.href) {
-      const cinema = cinemasData.find(cinema => cinema.id === id)
+      const room = roomsData.find(room => room.id === id)
 
-      setSelectedCinema(cinema)
-      setShowCinemaInfo(true)
+      setSelectedRoom(room)
+      setShowRoomInfo(true)
     }
   }
 
-  const closeCinemaInfo = () => {
-    setShowCinemaInfo(false)
+  const closeRoomInfo = () => {
+    setShowRoomInfo(false)
   }
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -89,35 +85,32 @@ const CinemasList = ({ cinemasData, updatedCinemaInfo }: { cinemasData: Theater[
                   </TableCell>
                 )),
                 <TableCell key='actions' align='right' sx={{ minWidth: 100 }}>
-                  Rooms
+                  Seats
                 </TableCell>
               ]}
             </TableRow>
           </TableHead>
           <TableBody>
-            {cinemasData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(cinema => {
+            {roomsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).filter((row) => {
+                const cinemaId = queryParams.get('cinemaId')
+    
+                return cinemaId ? row.theater.id == cinemaId : true
+            }).map(room => {
               return (
-                <TableRow hover role='checkbox' tabIndex={-1} key={cinema.id}>
+                <TableRow hover role='checkbox' tabIndex={-1} key={room.id}>
                   {[
                     ...columns.map(column => {
-                      const value = cinema[column.id]
+                      const columnId = column.id
+                      const value = columnId != 'cinemaName' ? room[columnId] : room.theater.name
 
                       return (
-                        <TableCell key={column.id} align={column.align} onClick={e => selectCinema(cinema.id, e)}>
-                          {column.format && typeof value === 'number' ? (
-                            column.format(value)
-                          ) : column.id === 'website' ? (
-                            <Link href={value} target='_blank'>
-                              {value}
-                            </Link>
-                          ) : (
-                            value
-                          )}
+                        <TableCell key={column.id} align={column.align} onClick={e => selectRoom(room.id, e)}>
+                          {column.format && typeof value === 'number' ? column.format(value) : value}
                         </TableCell>
                       )
                     }),
                     <TableCell key='actions' align='right'>
-                      <Link href={`/rooms?cinemaId=${cinema.id}`}>
+                      <Link href={`/seats?roomId=${room.id}`}>
                         <IconButton>
                           <EyeOutline />
                         </IconButton>
@@ -133,21 +126,21 @@ const CinemasList = ({ cinemasData, updatedCinemaInfo }: { cinemasData: Theater[
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component='div'
-        count={cinemasData.length}
+        count={roomsData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {showCinemaInfo && selectedCinema && (
-        <CinemaInfo
-          selectedCinema={selectedCinema}
-          closeCinemaInfo={closeCinemaInfo}
-          updatedCinemaInfo={updatedCinemaInfo}
+      {showRoomInfo && selectedRoom && (
+        <RoomInfo
+          selectedRoom={selectedRoom}
+          closeRoomInfo={closeRoomInfo}
+          updatedRoomInfo={updatedRoomInfo}
         />
       )}
     </Paper>
   )
 }
 
-export default CinemasList
+export default RoomsList

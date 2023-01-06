@@ -72,6 +72,14 @@ export type User = {
   roles?: UserRole[]
 }
 
+export type ShortUser = {
+  id: string
+  firstName: string
+  lastName: string
+  username: string
+  profilePicture?: string
+}
+
 export type MovieCategory = {
   id: string
   name: string
@@ -106,7 +114,7 @@ export type Theater = {
   phone: string
   email: string
   website: string
-  manager: User
+  manager: ShortUser
 }
 export type LatLngLiteral = google.maps.LatLngLiteral;
 

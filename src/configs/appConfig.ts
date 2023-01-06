@@ -1,4 +1,4 @@
-import { Movie, MovieCategory, Room, Screening, Seat, Theater, User } from 'src/@core/layouts/types'
+import { Movie, MovieCategory, Room, Screening, Seat, ShortUser, Theater, User } from 'src/@core/layouts/types'
 
 type AppConfig = {
   endpoint: string
@@ -6,6 +6,18 @@ type AppConfig = {
 
 const appConfig: AppConfig = {
   endpoint: 'https://api.cinemo.pl'
+}
+
+export namespace AccountListEndpoint {
+  export const path = '/accounts'
+  export const method = 'GET'
+
+  export type Request = {}
+  export type Response = {
+    success: boolean
+    message: string
+    data?: ShortUser[]
+  }
 }
 
 export namespace AccountLoginEndpoint {

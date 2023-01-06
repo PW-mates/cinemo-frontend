@@ -130,6 +130,7 @@ export type Room = {
 export type SeatType = {
   id: string
   name: string
+  color: string
 }
 
 export type Seat = {

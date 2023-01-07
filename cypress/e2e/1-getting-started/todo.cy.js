@@ -11,7 +11,7 @@
 // please read our getting started guide:
 // https://on.cypress.io/introduction-to-cypress
 
-describe('example to-do app', () => {
+describe('Cinemo App', () => {
   beforeEach(() => {
     // Cypress starts out with a blank slate for each test
     // so we must tell it to visit our website with the `cy.visit()` command.
@@ -39,6 +39,9 @@ describe('example to-do app', () => {
     // Validate if redirected to dashboard
     cy.url().should('eq', 'http://localhost:3000/')
     cy.title().should('eq', 'Cinemo - Little Cinemo Management System')
+
+    // Clear the local storage
+    cy.clearLocalStorage()
   })
 
   it('can logout', () => {

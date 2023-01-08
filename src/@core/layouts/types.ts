@@ -93,14 +93,14 @@ export type Movie = {
   description?: string
   director?: string
   distributor?: string
-  releaseDate?: Date
+  releaseDate?: number
   duration?: number
   rating?: number
   posterPhoto?: string
   trailerUrl?: string
-  showingFrom?: Date
-  showingTo?: Date
-  category?: MovieCategory[]
+  showingFrom?: number
+  showingTo?: number
+  categories?: MovieCategory[]
 }
 
 export type Theater = {

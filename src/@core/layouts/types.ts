@@ -159,8 +159,6 @@ export type Ticket = {
   seller: User
   totalPrice: number // Need to be calculated from seat type price
   createdAt: Date
-  paymentMethod: 'cash' | 'card'
-  paymentId: string
   status: 'new' | 'paid' | 'cancelled' | 'used' | 'expired'
   payment: Payment
 }

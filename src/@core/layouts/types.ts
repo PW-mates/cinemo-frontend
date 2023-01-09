@@ -131,6 +131,7 @@ export type SeatType = {
   id: string
   name: string
   color: string
+  price: number
 }
 
 export type Seat = {
@@ -156,26 +157,19 @@ export type Ticket = {
   screening: Screening
   seat?: Seat[]
   seller: User
-  totalPrice: number
+  totalPrice: number // Need to be calculated from seat type price
   createdAt: Date
   paymentMethod: 'cash' | 'card'
   paymentId: string
   status: 'new' | 'paid' | 'cancelled' | 'used' | 'expired'
-}
-
-export type TicketType = {
-  id: string
-  name: string
-  seatType: SeatType
-  price: number
-  description?: string
+  payment: Payment
 }
 
 export type Payment = {
   id: string
   amount: number
   currency: string
-  status: 'unpaid' | 'paid' | 'cancelled'
+  status: 'unpaid' | 'paid' | 'cancelled' // if status changed to 'paid', ticket status need to change to paid
   paymentMethod: 'cash' | 'card'
   reference: string
 }

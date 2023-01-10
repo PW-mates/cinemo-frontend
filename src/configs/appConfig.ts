@@ -716,4 +716,27 @@ export namespace PaymentUpdateEndpoint {
   }
 }
 
+export namespace StatisticsEndpoint {
+  /**
+   * @description
+   * This endpoint is used to get statistics.
+   */
+  export const path = '/statistics'
+  export const method = 'GET'
+
+  export type Request = {
+    days?: number // Number of day it will fetch for, default is 7
+  }
+  export type Response = {
+    success: boolean
+    message: string
+    data?: {
+      totalTicket: number,
+      totalOrder: number,
+      totalRevenue: number,
+      totalScreening: number
+    }
+  }
+}
+
 export default appConfig

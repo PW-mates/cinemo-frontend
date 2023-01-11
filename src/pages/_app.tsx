@@ -5,7 +5,7 @@ import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
 // ** Loader Import
-import NProgress, { settings } from 'nprogress'
+import NProgress from 'nprogress'
 
 // ** Emotion Imports
 import { CacheProvider } from '@emotion/react'

@@ -4,7 +4,6 @@ import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import { Theater } from 'src/@core/layouts/types'
-import { User } from 'src/@core/layouts/types'
 
 import { useLoadScript } from '@react-google-maps/api'
 
@@ -20,7 +19,7 @@ const Cinemas = () => {
   const [dialogMap, setDialogMap] = useState<boolean>(false)
   const [dialogNewCinema, setDialogNewCinema] = useState<boolean>(false)
   const [newCinema, setNewCinema] = useState<Theater | undefined>(undefined)
-  const { fetchData, response, error, loading } = useFetch()
+  const { fetchData } = useFetch()
   const fetchCinemaList = () => {
     fetchData(TheaterListEndpoint.method, TheaterListEndpoint.path).then(res => {
       if (res && res.success) {

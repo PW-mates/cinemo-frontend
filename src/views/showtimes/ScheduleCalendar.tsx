@@ -1,51 +1,65 @@
 import { useState, useEffect } from 'react'
 
 import FullCalendar from "@fullcalendar/react";
-import { formatDate } from "@fullcalendar/core"
+import { EventApi, formatDate } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
+
 import {
   Box,
-  Button,
   List,
   ListItem,
   ListItemText,
   Typography,
 } from "@mui/material";
 
+import useFetch from 'src/@core/utils/use-fetch'
 import { Screening } from "src/@core/layouts/types";
+import {
+  ScreeningUpdateEndpoint,
+  ScreeningCreateEndpoint,
+  ScreeningListEndpoint,
+  ScreeningDeleteEndpoint
+} from 'src/configs/appConfig'
+import { EventImpl } from '@fullcalendar/core/internal';
+
+import CalendarAddEvent from './CalendarAddEvent';
+
 
 const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesData: Screening[]; updatedShowtimesInfo: any }) => {
-  const [currentEvents, setCurrentEvents] = useState([]);
+  const [currentEvents, setCurrentEvents] = useState<EventApi[]>([]);
+  const [dialogAddEvent, setDialogAddEvent] = useState<boolean>(false)
+  const [newEvent, setNewEvent] = useState();
+  const { fetchData, response, error, loading } = useFetch()
 
   const initialData = () => {
     const test = showtimesData.map(showtime => (
       { id: showtime.id,
         title: showtime.movie.title,
-        date: showtime.date, 
+        start: (new Date(showtime.date)).getTime(), 
+        end: (new Date(showtime.date)).getTime() + showtime.movie.duration * 60000
         // color: 'blue',
         // textColor: 'red' ,
       }));
     return test
   }
 
-  const handleDateClick = (selected: any) => {
-    const title = prompt("Please enter a new title for your event");
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
+  const deleteShowtimesInfo = (event: EventImpl) => {
+    const path = ScreeningDeleteEndpoint.path.replace(':id', event.id.toString())
+    const method = ScreeningDeleteEndpoint.method
+    fetchData(method, path, undefined, undefined).then(res => {
+      if (res && res.success) {
+        updatedShowtimesInfo()
+      }
+    })
+  }
 
-    if (title) {
-      calendarApi.addEvent({
-        id: `${selected.dateStr}-${title}`,
-        title,
-        start: selected.startStr,
-        end: selected.endStr,
-        allDay: selected.allDay,
-      });
-    }
-  };
+  function handleDateClick(selected: any) {
+    setNewEvent(selected)
+    setDialogAddEvent(true)
+  }
 
   const handleEventClick = (selected: any) => {
     if (
@@ -55,6 +69,7 @@ const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesDa
     ) {
       selected.event.remove();
     }
+    deleteShowtimesInfo(selected.event)
   };
 
   return (
@@ -120,6 +135,13 @@ const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesDa
           />
         </Box>
       </Box>
+      {dialogAddEvent ? (
+        <CalendarAddEvent
+        newEvent={newEvent}
+        closeDialogAddEvent={() => setDialogAddEvent(false)}
+        updatedShowtimesInfo={updatedShowtimesInfo}
+        ></CalendarAddEvent>
+      ) : null}
     </Box>
   );
 };

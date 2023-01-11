@@ -3,19 +3,13 @@ import {
   Card,
   CardContent,
   Grid,
-  Paper,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  Tooltip,
-  Typography
+  Tooltip
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Screening, Seat, SeatType, Ticket } from 'src/@core/layouts/types'
 import useFetch from 'src/@core/utils/use-fetch'
 import { SeatListEndpoint, SeatTypeListEndpoint, TicketListEndpoint } from 'src/configs/appConfig'
-import { Seat as SeatIcon, Table, TableRow } from 'mdi-material-ui'
+import { Seat as SeatIcon } from 'mdi-material-ui'
 import Bill from './Bill'
 
 const SeatMap = ({ selectedShowtime, selectedSeats }: { selectedShowtime: Screening; selectedSeats: any }) => {

@@ -35,7 +35,7 @@ const TabInfo = () => {
   // ** State
   const [date, setDate] = useState<Date | null | undefined>(null)
   // ** State
-  const { fetchData, response, error, loading } = useFetch()
+  const { fetchData } = useFetch()
   const [values, setValues] = useState<User>()
   const [snackbar, setSnackbar] = useState({
     open: false,

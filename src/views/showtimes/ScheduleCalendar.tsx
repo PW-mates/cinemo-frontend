@@ -1,21 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from 'react'
+
 import FullCalendar from "@fullcalendar/react";
 import { formatDate } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-// import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import {
   Box,
+  Button,
   List,
   ListItem,
   ListItemText,
   Typography,
 } from "@mui/material";
 
-const ScheduleCalendar = () => {
-  const [currentEvents, setCurrentEvents] = useState([]);
+import { Screening } from "src/@core/layouts/types";
 
+const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesData: Screening[]; updatedShowtimesInfo: any }) => {
+  const [currentEvents, setCurrentEvents] = useState([]);
+  
+//   useEffect(() => {
+// }, [showtimesData])
+//   console.log(arr);
+// }
   const handleDateClick = (selected) => {
     const title = prompt("Please enter a new title for your event");
     const calendarApi = selected.view.calendar;
@@ -32,9 +40,24 @@ const ScheduleCalendar = () => {
     }
   };
 
+  const handleEventClick = (selected) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the event '${selected.event.title}'`
+      )
+    ) {
+      selected.event.remove();
+    }
+  };
+
+  const handle =() => {
+    // console.log(currentEvents);
+    console.log(showtimesData);
+  }
+
   return (
     <Box m="20px">
-
+      <Button onClick={handle}> AAAAA</Button>
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}
         <Box
@@ -76,7 +99,7 @@ const ScheduleCalendar = () => {
             plugins={[
               dayGridPlugin,
               timeGridPlugin,
-            //   interactionPlugin,
+              interactionPlugin,
               listPlugin,
             ]}
             headerToolbar={{
@@ -89,19 +112,20 @@ const ScheduleCalendar = () => {
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            // select={handleDateClick}
-            // eventClick={handleEventClick}
+            select={handleDateClick}
+            eventClick={handleEventClick}
             eventsSet={(events) => setCurrentEvents(events)}
             initialEvents={[
               {
                 id: "12315",
                 title: "All-day event",
-                date: "2022-12-23",
+                date: "2023-01-12",
               },
               {
                 id: "5123",
                 title: "Timed event",
-                date: "2022-12-24",
+                start: '2023-01-11T10:30:00',
+                end: '2023-01-11T11:30:00',
               },
             ]}
           />

@@ -28,6 +28,7 @@ const Showtimes = () => {
   const updatedShowtimesInfo = () => {
     fetchShowtimesList()
   }
+  
     return (
         <Box>
             <Grid item xs={12} sx={{ paddingBottom: 4 }}>

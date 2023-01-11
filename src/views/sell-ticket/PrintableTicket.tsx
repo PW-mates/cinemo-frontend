@@ -1,4 +1,4 @@
-import { Box, BoxProps, Button, Card, CardContent, Divider, Grid, styled, Typography } from '@mui/material'
+import { Box, BoxProps, Card, CardContent, Divider, Grid, styled, Typography } from '@mui/material'
 import { Ticket } from 'src/@core/layouts/types'
 import DirectionsIcon from '@mui/icons-material/Directions'
 import CameraIndoorIcon from '@mui/icons-material/CameraIndoor'

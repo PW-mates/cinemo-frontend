@@ -34,6 +34,7 @@ const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesDa
         start: (new Date(showtime.date)).getTime(), 
         end: (new Date(showtime.date)).getTime() + showtime.movie.duration * 60000,
       }));
+      
     return newShowtime
   }
 

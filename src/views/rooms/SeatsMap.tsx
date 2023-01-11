@@ -53,7 +53,6 @@ const SeatsMap = ({ selectedRoom, closedSeatsMap }: { selectedRoom: Room; closed
       }
       seatMap[seat.row][seat.column] = seat
     }
-    console.log(seatMap)
   }
 
   return (

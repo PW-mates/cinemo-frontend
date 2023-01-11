@@ -44,6 +44,7 @@ const ShowTime = ({ selectedShowtime }: { selectedShowtime: (showtime: Screening
         <DatePickerWrapper>
           <DatePicker
             selected={date}
+            minDate={new Date()}
             showYearDropdown
             showMonthDropdown
             id='account-settings-date'

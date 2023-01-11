@@ -12,28 +12,13 @@ import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector
 import { StepIconProps } from '@mui/material/StepIcon'
 import { Button, Card, CardActions, CardHeader, Grid } from '@mui/material'
 import ShowTime from 'src/views/sell-ticket/ShowTime'
-import { Screening } from 'src/@core/layouts/types'
-
-const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(({ theme, ownerState }) => ({
-  color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
-  display: 'flex',
-  height: 22,
-  alignItems: 'center',
-  ...(ownerState.active && {
-    color: '#784af4'
-  }),
-  '& .QontoStepIcon-completedIcon': {
-    color: '#784af4',
-    zIndex: 1,
-    fontSize: 18
-  },
-  '& .QontoStepIcon-circle': {
-    width: 8,
-    height: 8,
-    borderRadius: '50%',
-    backgroundColor: 'currentColor'
-  }
-}))
+import { Payment as PaymentObj, Screening, Seat, Ticket } from 'src/@core/layouts/types'
+import SeatMap from 'src/views/sell-ticket/SeatMap'
+import Payment from 'src/views/sell-ticket/Payment'
+import useFetch from 'src/@core/utils/use-fetch'
+import { TicketCreateEndpoint } from 'src/configs/appConfig'
+import { useSettings } from 'src/@core/hooks/useSettings'
+import PrintableTicket from 'src/views/sell-ticket/PrintableTicket'
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -98,11 +83,69 @@ function ColorlibStepIcon(props: StepIconProps) {
 const steps = ['Select show time', 'Select seats', 'Payment', 'Print ticket']
 
 const SellTicket = () => {
+  const { settings, saveSettings } = useSettings()
   const [activeStep, setActiveStep] = React.useState(0)
-  const [showtime, setShowtime] = React.useState<Screening | undefined>(undefined);
+  const [showtime, setShowtime] = React.useState<Screening | undefined>(undefined)
+  const [seats, setSeats] = React.useState<Seat[] | undefined>([])
+  const [ticket, setTicket] = React.useState<Ticket | undefined>()
+  const [payment, setPayment] = React.useState<Payment | undefined>(undefined)
+  const { fetchData } = useFetch()
   const selectedShowtime = (showtime: Screening) => {
     setShowtime(showtime)
     setActiveStep(1)
+  }
+  const selectedSeats = (seats: Seat[]) => {
+    setSeats(seats)
+    console.log(seats)
+    console.log(
+      seats.map(seat => {
+        return {
+          id: seat.id
+        }
+      })
+    )
+    fetchData(
+      TicketCreateEndpoint.method,
+      TicketCreateEndpoint.path,
+      {},
+      {
+        screening: {
+          id: showtime?.id
+        },
+        seats: seats.map(seat => {
+          return {
+            id: seat.id
+          }
+        }),
+        seller: {
+          id: settings.user?.id
+        },
+        status: 'new'
+      }
+    ).then(res => {
+      if (res && res.data) {
+        setTicket(res.data)
+        setActiveStep(2)
+        console.log(res.data)
+      }
+    })
+  }
+
+  const paidTicket = (payment: PaymentObj) => {
+    setPayment(payment)
+    setActiveStep(3)
+  }
+
+  const cancelledTicket = () => {
+    setShowtime(undefined)
+    setSeats([])
+    setTicket(undefined)
+    setPayment(undefined)
+    setActiveStep(0)
+  }
+
+  const handlePrint = () => {
+    window.print();
   }
 
   return (
@@ -120,13 +163,29 @@ const SellTicket = () => {
             </Stepper>
           </Stack>
           <Grid item spacing={6} xs={12}>
-            {activeStep === 0 ? <ShowTime selectedShowtime={selectedShowtime}/> : null}
-            {activeStep === 1 ? <div>Step 2</div> : null}
-            {activeStep === 2 ? <div>Step 3</div> : null}
-            {activeStep === 3 ? <div>Step 4</div> : null}
+            {activeStep === 0 ? <ShowTime selectedShowtime={selectedShowtime} /> : null}
+            {activeStep === 1 && showtime ? (
+              <SeatMap selectedShowtime={showtime} selectedSeats={selectedSeats} />
+            ) : null}
+            {activeStep === 2 && ticket ? (
+              <Payment ticket={ticket} paidTicket={paidTicket} cancelledTicket={cancelledTicket} />
+            ) : null}
           </Grid>
         </Card>
       </Grid>
+      {activeStep === 3 && ticket ? (
+        <Grid item xs={12} spacing={6}>
+          <PrintableTicket ticket={ticket}/>
+          <Grid xs={12} spacing={6} style={{ textAlign: 'center' }}>
+            <Button
+              variant='contained'
+              onClick={handlePrint}
+            >
+              Print ticket
+            </Button>
+          </Grid>
+        </Grid>
+      ) : null}
     </Grid>
   )
 }

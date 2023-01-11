@@ -19,7 +19,7 @@
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "test": "npm run build & npm start & wait-on http://localhost:3000 && cypress open",
+    "test": "cypress open",
     "lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },
@@ -34,6 +34,7 @@
     "@fullcalendar/list": "^6.0.1",
     "@fullcalendar/react": "^6.0.1",
     "@fullcalendar/timegrid": "^6.0.1",
+    "@mui/icons-material": "^5.11.0",
     "@mui/lab": "^5.0.0-alpha.70",
     "@mui/material": "^5.4.3",
     "@popperjs/core": "^2.11.2",
@@ -49,7 +50,8 @@
     "react-datepicker": "^4.5.0",
     "react-dom": "17.0.2",
     "react-perfect-scrollbar": "^1.5.8",
-    "react-popper": "^2.2.5"
+    "react-popper": "^2.2.5",
+    "react-qr-code": "^2.0.11"
   },
   "devDependencies": {
     "@types/node": "16.11.11",

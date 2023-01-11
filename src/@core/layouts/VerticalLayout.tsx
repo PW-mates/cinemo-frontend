@@ -64,7 +64,7 @@ const VerticalLayout = (props: LayoutProps) => {
 
   return (
     <>
-      <VerticalLayoutWrapper className='layout-wrapper'>
+      <VerticalLayoutWrapper className='layout-wrappern no-print'>
         {/* Navigation Menu */}
         <Navigation
           navWidth={navWidth}

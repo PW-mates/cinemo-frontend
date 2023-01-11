@@ -2,7 +2,6 @@
 import { ReactNode, useEffect, useState } from 'react'
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
 import { Theme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
@@ -29,7 +28,7 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
-  const { fetchData, response, error, loading } = useFetch();
+  const { fetchData } = useFetch();
 
   // ** Fetch Account Info
   const [refreshed, setRefreshed] = useState(false);
@@ -46,7 +45,7 @@ const UserLayout = ({ children }: Props) => {
         }
       })
     }
-  }, [refreshed, settings]);
+  }, [refreshed, settings, saveSettings, fetchData]);
 
   useEffect(() => {
     if (settings && settings.loaded && !settings.user) {

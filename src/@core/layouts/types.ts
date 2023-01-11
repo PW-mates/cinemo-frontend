@@ -155,12 +155,12 @@ export type Ticket = {
   id: string
   code: string // Random generated code when ticket is created
   screening: Screening
-  seat?: Seat[]
+  seats?: Seat[]
   seller: User
   totalPrice: number // Need to be calculated from seat type price
   createdAt: Date
   status: 'new' | 'paid' | 'cancelled' | 'used' | 'expired'
-  payment: Payment
+  payment?: Payment
 }
 
 export type Payment = {

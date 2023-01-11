@@ -10,7 +10,7 @@ const SeatsMap = ({ selectedRoom, closedSeatsMap }: { selectedRoom: Room; closed
   const [seats, setSeats] = useState<Seat[]>()
   const [seatTypes, setSeatTypes] = useState<SeatType[]>()
   const [selectedSeat, setSelectedSeat] = useState<Seat>()
-  const { fetchData, response, error, loading } = useFetch()
+  const { fetchData } = useFetch()
   const fetchSeats = () => {
     const path = SeatListEndpoint.path.replace(':roomId', selectedRoom.id.toString())
     const method = SeatListEndpoint.method
@@ -53,7 +53,6 @@ const SeatsMap = ({ selectedRoom, closedSeatsMap }: { selectedRoom: Room; closed
       }
       seatMap[seat.row][seat.column] = seat
     }
-    console.log(seatMap)
   }
 
   return (

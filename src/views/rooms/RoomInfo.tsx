@@ -5,18 +5,14 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import { Grid, MenuItem, Select, TextField } from '@mui/material'
-import { Room, ShortUser, Theater } from 'src/@core/layouts/types'
+import { Room, Theater } from 'src/@core/layouts/types'
 import { useEffect, useState } from 'react'
 import useFetch from 'src/@core/utils/use-fetch'
 import {
-  AccountListEndpoint,
   RoomCreateEndpoint,
   RoomDeleteEndpoint,
   RoomUpdateEndpoint,
-  TheaterCreateEndpoint,
-  TheaterDeleteEndpoint,
-  TheaterListEndpoint,
-  TheaterUpdateEndpoint
+  TheaterListEndpoint
 } from 'src/configs/appConfig'
 
 const RoomDialog = styled(Dialog)(({ theme }) => ({

@@ -23,7 +23,7 @@ describe('Cinemo App', () => {
   it('display login page by default', () => {
     // Validate that the login page is displayed by default
     cy.url().should('include', '/pages/login')
-    cy.get('form input').should('have.length', 3)
+    cy.get('form input').should('have.length', 2)
     cy.get('form input[id="username"]').should('exist')
     cy.get('form input[type="password"]').should('exist')
     cy.get('form button').should('exist')

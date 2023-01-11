@@ -19,7 +19,8 @@ import CellphoneLink from 'mdi-material-ui/CellphoneLink'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 
 // ** Types
-import { ThemeColor } from 'src/@core/layouts/types'
+import { ThemeColor, User } from 'src/@core/layouts/types'
+import { StatisticsEndpoint } from 'src/configs/appConfig'
 
 interface DataType {
   stats: string
@@ -81,7 +82,14 @@ const renderStats = () => {
   ))
 }
 
-const StatisticsCard = () => {
+const StatisticsCard = ({ user, statistics }: { user: User; statistics: StatisticsEndpoint.Statistics }) => {
+  if (statistics) {
+    salesData[0].stats = statistics.totalTicket?.toString() || '0'
+    salesData[1].stats = statistics.totalOrder?.toString() || '0'
+    salesData[2].stats = statistics.totalRevenue?.toString() || '0'
+    salesData[3].stats = statistics.totalScreening?.toString() || '0'
+  }
+
   return (
     <Card>
       <CardHeader
@@ -94,9 +102,9 @@ const StatisticsCard = () => {
         subheader={
           <Typography variant='body2'>
             <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-              Total 48.5% growth
+              Welcome back {user.firstName}
             </Box>{' '}
-            😎 this month
+            😎 have a nice day!
           </Typography>
         }
         titleTypographyProps={{

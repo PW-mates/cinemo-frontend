@@ -90,7 +90,7 @@ const ShowtimeDialog = styled(Dialog)(({ theme }) => ({
                 id: res.data.id,
                 title,
                 start: eventData.date,
-                end: eventData.date + duration * 60000,
+                end: eventData.date + (duration || 0) * 60000,
             }
             calendarApi.addEvent(eventToshow);
           }
@@ -118,7 +118,7 @@ const ShowtimeDialog = styled(Dialog)(({ theme }) => ({
                 
               {roomsData !== undefined ? roomsData.map(room => (
                 <MenuItem key={room.id} value={room.id}>
-                  {room.name}
+                  {room.theater.name} - {room.name}
                 </MenuItem>
               )): null}
             </Select>

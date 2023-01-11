@@ -32,9 +32,9 @@ const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesDa
       { id: showtime.id,
         title: showtime.movie.title,
         start: (new Date(showtime.date)).getTime(), 
-        end: (new Date(showtime.date)).getTime() + showtime.movie.duration * 60000,
+        end: (new Date(showtime.date)).getTime() + (showtime.movie.duration || 0) * 60000,
       }));
-      
+
     return newShowtime
   }
 

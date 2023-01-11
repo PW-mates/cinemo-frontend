@@ -57,12 +57,16 @@ const ShowTime = ({ selectedShowtime }: { selectedShowtime: (showtime: Screening
         </DatePickerWrapper>
       </Grid>
       <Grid container item xs={12} spacing={6}>
-        {showTimesByDate?.map((showTime, index) => (
+        {showTimesByDate?.sort((a, b)=> {
+          return new Date(a.date).getTime() - new Date(b.date).getTime()
+        }).map((showTime, index) => (
           <Grid item key={index} xs={3}>
             <Button variant='contained' fullWidth color='primary' onClick={() => {
                 selectedShowtime(showTime)
             }}>
               {showTime.movie.title} - {new Date(showTime.date).toLocaleTimeString()}
+              <br/>
+              {showTime.room.theater.name} - {showTime.room.name}
             </Button>
           </Grid>
         ))}

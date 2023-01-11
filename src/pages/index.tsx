@@ -28,7 +28,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (statistics === undefined) {
       fetchData(StatisticsEndpoint.method, StatisticsEndpoint.path).then((res) => {
-        setStatistics(res)
+        setStatistics(res.data)
       }).catch((err) => {
         console.log(err)
         setStatistics(null);

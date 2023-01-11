@@ -10,7 +10,7 @@ import PaymentsIcon from '@mui/icons-material/Payments'
 import PrintIcon from '@mui/icons-material/Print'
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector'
 import { StepIconProps } from '@mui/material/StepIcon'
-import { Button, Card, CardActions, CardHeader, Grid } from '@mui/material'
+import { Button, Card, CardHeader, Grid } from '@mui/material'
 import ShowTime from 'src/views/sell-ticket/ShowTime'
 import { Payment as PaymentObj, Screening, Seat, Ticket } from 'src/@core/layouts/types'
 import SeatMap from 'src/views/sell-ticket/SeatMap'
@@ -83,12 +83,12 @@ function ColorlibStepIcon(props: StepIconProps) {
 const steps = ['Select show time', 'Select seats', 'Payment', 'Print ticket']
 
 const SellTicket = () => {
-  const { settings, saveSettings } = useSettings()
+  const { settings } = useSettings()
   const [activeStep, setActiveStep] = React.useState(0)
   const [showtime, setShowtime] = React.useState<Screening | undefined>(undefined)
-  const [seats, setSeats] = React.useState<Seat[] | undefined>([])
+  const [, setSeats] = React.useState<Seat[] | undefined>([])
   const [ticket, setTicket] = React.useState<Ticket | undefined>()
-  const [payment, setPayment] = React.useState<PaymentObj | undefined>(undefined)
+  const [, setPayment] = React.useState<PaymentObj | undefined>(undefined)
   const { fetchData } = useFetch()
   const selectedShowtime = (showtime: Screening) => {
     setShowtime(showtime)
@@ -145,7 +145,7 @@ const SellTicket = () => {
   }
 
   const handlePrint = () => {
-    window.print();
+    window.print()
   }
 
   return (
@@ -175,12 +175,9 @@ const SellTicket = () => {
       </Grid>
       {activeStep === 3 && ticket ? (
         <Grid item xs={12} spacing={6}>
-          <PrintableTicket ticket={ticket}/>
+          <PrintableTicket ticket={ticket} />
           <Grid xs={12} spacing={6} style={{ textAlign: 'center' }}>
-            <Button
-              variant='contained'
-              onClick={handlePrint}
-            >
+            <Button variant='contained' onClick={handlePrint}>
               Print ticket
             </Button>
           </Grid>

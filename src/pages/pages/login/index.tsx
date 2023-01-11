@@ -2,6 +2,7 @@
 import { ChangeEvent, MouseEvent, ReactNode, useState } from 'react'
 
 // ** Next Imports
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 // ** MUI Components
@@ -15,9 +16,10 @@ import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Snackbar from '@mui/material/Snackbar'
-import { styled } from '@mui/material/styles'
+import { styled, useTheme } from '@mui/material/styles'
 import MuiCard, { CardProps } from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
+import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
@@ -34,6 +36,7 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { useSettings } from 'src/@core/hooks/useSettings'
 import useFetch from 'src/@core/utils/use-fetch'
 import { AccountInfoEndpoint, AccountLoginEndpoint } from 'src/configs/appConfig'
+import { Children } from 'react'
 import { useEffect } from 'react'
 
 interface State {
@@ -45,6 +48,19 @@ interface State {
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
+}))
+
+const LinkStyled = styled('a')(({ theme }) => ({
+  fontSize: '0.875rem',
+  textDecoration: 'none',
+  color: theme.palette.primary.main
+}))
+
+const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ theme }) => ({
+  '& .MuiFormControlLabel-label': {
+    fontSize: '0.875rem',
+    color: theme.palette.text.secondary
+  }
 }))
 
 const LoginPage = () => {
@@ -61,6 +77,7 @@ const LoginPage = () => {
   const { settings, saveSettings } = useSettings()
 
   // ** Hook
+  const theme = useTheme()
   const router = useRouter()
 
   const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +98,7 @@ const LoginPage = () => {
     }
   }
 
-  const { fetchData, loading } = useFetch()
+  const { fetchData, response, error, loading } = useFetch()
   const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const data: AccountLoginEndpoint.Request = {
@@ -107,7 +124,7 @@ const LoginPage = () => {
         }
       })
     }
-  }, [router, settings, fetchData, saveSettings])
+  }, [router, settings])
 
   return (
     <Box className='content-center'>
@@ -170,6 +187,11 @@ const LoginPage = () => {
                 }
               />
             </FormControl>
+            <Box
+              sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
+            >
+
+            </Box>
             <Button
               disabled={loading}
               fullWidth

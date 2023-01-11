@@ -89,7 +89,6 @@ const ShowtimeDialog = styled(Dialog)(({ theme }) => ({
         fetchData(method, path, undefined, eventData).then(res => {
           if (res && res.success) {
             updatedShowtimesInfo()
-            console.log(movie)
             const eventToshow = {
                 id: res.data.id,
                 title,

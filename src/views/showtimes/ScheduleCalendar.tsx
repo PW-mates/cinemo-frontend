@@ -1,28 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import FullCalendar from "@fullcalendar/react";
-import { EventApi, formatDate } from "@fullcalendar/core"
+import { EventApi } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 
 import {
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
+  Box
 } from "@mui/material";
-import { FixedSizeList } from 'react-window';
-
 
 import useFetch from 'src/@core/utils/use-fetch'
 import { Screening } from "src/@core/layouts/types";
 import {
-  ScreeningUpdateEndpoint,
-  ScreeningCreateEndpoint,
-  ScreeningListEndpoint,
   ScreeningDeleteEndpoint
 } from 'src/configs/appConfig'
 import { EventImpl } from '@fullcalendar/core/internal';
@@ -37,15 +28,13 @@ const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesDa
   const { fetchData, response, error, loading } = useFetch()
 
   const initialData = () => {
-    const test = showtimesData.map(showtime => (
+    const newShowtime = showtimesData.map(showtime => (
       { id: showtime.id,
         title: showtime.movie.title,
         start: (new Date(showtime.date)).getTime(), 
-        end: (new Date(showtime.date)).getTime() + showtime.movie.duration * 60000
-        // color: 'blue',
-        // textColor: 'red' ,
+        end: (new Date(showtime.date)).getTime() + showtime.movie.duration * 60000,
       }));
-    return test
+    return newShowtime
   }
 
   const deleteShowtimesInfo = (event: EventImpl) => {

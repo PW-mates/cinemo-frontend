@@ -7,10 +7,7 @@ import DialogActions from '@mui/material/DialogActions'
 import { styled } from '@mui/material/styles'
 
 import {
-    ScreeningUpdateEndpoint,
     ScreeningCreateEndpoint,
-    ScreeningListEndpoint,
-    ScreeningDeleteEndpoint
   } from 'src/configs/appConfig'
 
 import { RoomListEndpoint } from 'src/configs/appConfig'
@@ -20,7 +17,7 @@ import { Movie } from 'src/@core/layouts/types'
 
 import useFetch from 'src/@core/utils/use-fetch'
 import { useState, useEffect } from 'react'
-import { title } from 'process'
+
 
 const ShowtimeDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {

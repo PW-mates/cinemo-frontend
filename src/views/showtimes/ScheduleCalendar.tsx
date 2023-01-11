@@ -19,12 +19,19 @@ import { Screening } from "src/@core/layouts/types";
 
 const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesData: Screening[]; updatedShowtimesInfo: any }) => {
   const [currentEvents, setCurrentEvents] = useState([]);
-  
-//   useEffect(() => {
-// }, [showtimesData])
-//   console.log(arr);
-// }
-  const handleDateClick = (selected) => {
+
+  const initialData = () => {
+    const test = showtimesData.map(showtime => (
+      { id: showtime.id,
+        title: showtime.movie.title,
+        date: showtime.date, 
+        // color: 'blue',
+        // textColor: 'red' ,
+      }));
+    return test
+  }
+
+  const handleDateClick = (selected: any) => {
     const title = prompt("Please enter a new title for your event");
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
@@ -40,7 +47,7 @@ const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesDa
     }
   };
 
-  const handleEventClick = (selected) => {
+  const handleEventClick = (selected: any) => {
     if (
       window.confirm(
         `Are you sure you want to delete the event '${selected.event.title}'`
@@ -50,14 +57,8 @@ const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesDa
     }
   };
 
-  const handle =() => {
-    // console.log(currentEvents);
-    console.log(showtimesData);
-  }
-
   return (
     <Box m="20px">
-      <Button onClick={handle}> AAAAA</Button>
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}
         <Box
@@ -115,19 +116,7 @@ const ScheduleCalendar = ({ showtimesData, updatedShowtimesInfo }: { showtimesDa
             select={handleDateClick}
             eventClick={handleEventClick}
             eventsSet={(events) => setCurrentEvents(events)}
-            initialEvents={[
-              {
-                id: "12315",
-                title: "All-day event",
-                date: "2023-01-12",
-              },
-              {
-                id: "5123",
-                title: "Timed event",
-                start: '2023-01-11T10:30:00',
-                end: '2023-01-11T11:30:00',
-              },
-            ]}
+            initialEvents={initialData()}
           />
         </Box>
       </Box>

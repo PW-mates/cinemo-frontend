@@ -54,7 +54,7 @@ const PrintableTicket = ({ ticket }: { ticket: Ticket }) => {
                 <Box sx={{ mb: 6.75, display: 'flex', alignItems: 'center' }}>
                   <EventSeatIcon sx={{ color: 'primary.main', marginRight: 2.75 }} fontSize='small' />
                   <Typography variant='body2'>
-                    <b>{ticket.seats?.map(seat => `row ${seat.row} - column ${seat.column}`).join('<br/>')}</b>
+                    <b>{ticket.seats?.map(seat => `row ${seat.row} - column ${seat.column}`).join(', ')}</b>
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>

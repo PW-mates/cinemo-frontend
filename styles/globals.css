@@ -27,18 +27,3 @@ code[class*='language-'] {
   display: flex;
   height: 70vh;
 }
-
-@media print
-{    
-    .no-print, .no-print *
-    {
-        display: none;
-    }
-
-    .print, .print *
-    {
-        display: block !important;
-    }
-}
-
-

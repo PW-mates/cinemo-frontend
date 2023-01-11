@@ -176,9 +176,16 @@ const SellTicket = () => {
       {activeStep === 3 && ticket ? (
         <Grid item xs={12} spacing={6}>
           <PrintableTicket ticket={ticket} />
-          <Grid xs={12} spacing={6} style={{ textAlign: 'center' }}>
-            <Button variant='contained' onClick={handlePrint}>
+          <Grid item xs={12} style={{ textAlign: 'center' }}>
+            <Button variant='contained' onClick={handlePrint} fullWidth>
               Print ticket
+            </Button>
+          </Grid>
+          <Grid item xs={12} style={{ textAlign: 'center' }}>
+            <Button variant='outlined' onClick={() => {
+              cancelledTicket()
+            }} fullWidth>
+              Back to home
             </Button>
           </Grid>
         </Grid>

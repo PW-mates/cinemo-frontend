@@ -28,7 +28,7 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
-  const { fetchData, response, error, loading } = useFetch();
+  const { fetchData } = useFetch();
 
   // ** Fetch Account Info
   const [refreshed, setRefreshed] = useState(false);
@@ -45,7 +45,7 @@ const UserLayout = ({ children }: Props) => {
         }
       })
     }
-  }, [refreshed, settings]);
+  }, [refreshed, settings, saveSettings, fetchData]);
 
   useEffect(() => {
     if (settings && settings.loaded && !settings.user) {

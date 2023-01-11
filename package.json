@@ -19,7 +19,7 @@
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "test": "npm run build & npm start & wait-on http://localhost:3000 && cypress open",
+    "test": "cypress open",
     "lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
   },

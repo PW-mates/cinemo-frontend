@@ -3,9 +3,9 @@ import Grid from '@mui/material/Grid'
 
 // ** Icons Imports
 import Poll from 'mdi-material-ui/Poll'
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline'
+import Theater from 'mdi-material-ui/Theater'
+import CalendarBlankOutline from 'mdi-material-ui/CalendarBlankOutline'
+import TicketOutline from 'mdi-material-ui/TicketOutline'
 
 // ** Custom Components Imports
 import CardStatisticsVerticalComponent from 'src/@core/components/card-statistics/card-stats-vertical'
@@ -15,57 +15,56 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
+import { useSettings } from 'src/@core/hooks/useSettings'
+import useFetch from 'src/@core/utils/use-fetch'
+import { StatisticsEndpoint } from 'src/configs/appConfig'
+import { useEffect, useState } from 'react'
 
 const Dashboard = () => {
+  const { settings } = useSettings()
+  const { fetchData } = useFetch()
+  const [ statistics, setStatistics ] = useState<undefined | null | StatisticsEndpoint.Statistics>(undefined)
+
+  useEffect(() => {
+    if (statistics === undefined) {
+      fetchData(StatisticsEndpoint.method, StatisticsEndpoint.path).then((res) => {
+        setStatistics(res.data)
+      }).catch((err) => {
+        console.log(err)
+        setStatistics(null);
+      });
+    }
+  }, [statistics]);
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={12}>
-          <StatisticsCard />
+          {settings.user && statistics ? <StatisticsCard user={settings.user} statistics={statistics} /> : null}
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={6}>
             <Grid item xs={3}>
               <CardStatisticsVerticalComponent
-                stats='$25.6k'
                 icon={<Poll />}
                 color='success'
-                trendNumber='+42%'
-                title='Total Profit'
-                subtitle='Weekly Profit'
+                title='Sell ticket'
+                href='/sell-ticket'
               />
             </Grid>
             <Grid item xs={3}>
               <CardStatisticsVerticalComponent
-                stats='$78'
-                title='Refunds'
-                trend='negative'
+                title='Movies'
                 color='secondary'
-                trendNumber='-15%'
-                subtitle='Past Month'
-                icon={<CurrencyUsd />}
+                icon={<TicketOutline />}
+                href='/movies'
               />
             </Grid>
             <Grid item xs={3}>
-              <CardStatisticsVerticalComponent
-                stats='862'
-                trend='negative'
-                trendNumber='-18%'
-                title='New Project'
-                subtitle='Yearly Project'
-                icon={<BriefcaseVariantOutline />}
-              />
+              <CardStatisticsVerticalComponent title='Showtimes' icon={<CalendarBlankOutline />} href='/schedule' />
             </Grid>
             <Grid item xs={3}>
-              <CardStatisticsVerticalComponent
-                stats='15'
-                color='warning'
-                trend='negative'
-                trendNumber='-18%'
-                subtitle='Last Week'
-                title='Sales Queries'
-                icon={<HelpCircleOutline />}
-              />
+              <CardStatisticsVerticalComponent color='warning' title='Theaters' icon={<Theater />} href='/theaters' />
             </Grid>
           </Grid>
         </Grid>

@@ -10,7 +10,7 @@ const MovieCategories = () => {
     const [movieCategoriesData, setMovieCategoriesData] = useState<MovieCategory[] | undefined>(undefined)
     const [dialogNewMovieCategory, setDialogNewMovieCategory] = useState<boolean>(false)
     const [newMovieCategory, setNewMovieCategory] = useState<MovieCategory | undefined>(undefined)
-    const { fetchData, response, error, loading } = useFetch()
+    const { fetchData } = useFetch()
     const fetchMovieCategoryData = () => {
       fetchData(MovieCategoryListEndpoint.method, MovieCategoryListEndpoint.path).then(res => {
         if (res && res.success) {

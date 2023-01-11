@@ -727,15 +727,16 @@ export namespace StatisticsEndpoint {
   export type Request = {
     days?: number // Number of day it will fetch for, default is 7
   }
+  export type Statistics = {
+    totalTicket: number,
+    totalOrder: number,
+    totalRevenue: number,
+    totalScreening: number
+  }
   export type Response = {
     success: boolean
     message: string
-    data?: {
-      totalTicket: number,
-      totalOrder: number,
-      totalRevenue: number,
-      totalScreening: number
-    }
+    data?: Statistics
   }
 }
 

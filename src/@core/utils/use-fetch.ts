@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import appConfig from 'src/configs/appConfig'
-import { Settings } from '../context/settingsContext'
 import fetch, { RequestInit, HeadersInit } from 'node-fetch'
 import { useSettings } from '../hooks/useSettings'
 
@@ -8,7 +7,7 @@ export default function useCustomFetch<T>() {
   const [response, setResponse] = useState<T | null | unknown>(null)
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState(false)
-  const { settings, saveSettings } = useSettings()
+  const { settings } = useSettings()
   const fetchData = async (
     method = 'GET',
     pathname: string,

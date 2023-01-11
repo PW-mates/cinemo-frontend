@@ -88,7 +88,7 @@ const SellTicket = () => {
   const [showtime, setShowtime] = React.useState<Screening | undefined>(undefined)
   const [seats, setSeats] = React.useState<Seat[] | undefined>([])
   const [ticket, setTicket] = React.useState<Ticket | undefined>()
-  const [payment, setPayment] = React.useState<Payment | undefined>(undefined)
+  const [payment, setPayment] = React.useState<PaymentObj | undefined>(undefined)
   const { fetchData } = useFetch()
   const selectedShowtime = (showtime: Screening) => {
     setShowtime(showtime)

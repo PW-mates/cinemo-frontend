@@ -1,4 +1,4 @@
-import { Movie, MovieCategory, Room, Screening, Seat, Theater, User } from 'src/@core/layouts/types'
+import { Movie, MovieCategory, Payment, Room, Screening, Seat, SeatType, ShortUser, Theater, Ticket, User } from 'src/@core/layouts/types'
 
 type AppConfig = {
   endpoint: string
@@ -6,6 +6,18 @@ type AppConfig = {
 
 const appConfig: AppConfig = {
   endpoint: 'https://api.cinemo.pl'
+}
+
+export namespace AccountListEndpoint {
+  export const path = '/accounts'
+  export const method = 'GET'
+
+  export type Request = {}
+  export type Response = {
+    success: boolean
+    message: string
+    data?: ShortUser[]
+  }
 }
 
 export namespace AccountLoginEndpoint {
@@ -445,6 +457,22 @@ export namespace RoomDeleteEndpoint {
   }
 }
 
+export namespace SeatTypeListEndpoint {
+  /**
+   * @description
+   * This endpoint is used to get list of seat types.
+   */
+  export const path = '/seat-types'
+  export const method = 'GET'
+
+  export type Request = {}
+  export type Response = {
+    success: boolean
+    message: string
+    data?: SeatType[]
+  }
+}
+
 export namespace SeatListEndpoint {
   /**
    * @description
@@ -570,6 +598,121 @@ export namespace ScreeningDeleteEndpoint {
   export type Response = {
     success: boolean
     message: string
+  }
+}
+
+export namespace TicketListEndpoint {
+  /**
+   * @description
+   * This endpoint is used to get list of tickets.
+   */
+  export const path = '/tickets'
+  export const method = 'GET'
+
+  export type Request = {}
+  export type Response = {
+    success: boolean
+    message: string
+    data?: Ticket[]
+  }
+}
+
+export namespace TicketCreateEndpoint {
+  /**
+   * @description
+   * This endpoint is used to create new ticket.
+   */
+  export const path = '/tickets'
+  export const method = 'POST'
+
+  export type Request = Ticket
+  export type Response = {
+    success: boolean
+    message: string
+    data?: Ticket 
+  }
+}
+
+export namespace TicketUpdateEndpoint {
+  export const path = '/tickets/:id'
+  export const method = 'PATCH'
+
+  export type Request = Ticket
+  export type Response = {
+    success: boolean
+    message: string
+    data?: Ticket
+  }
+}
+
+export namespace TicketDeleteEndpoint {
+  export const path = '/tickets/:id'
+  export const method = 'DELETE'
+
+  export type Request = {}
+  export type Response = {
+    success: boolean
+    message: string
+  }
+}
+
+export namespace TicketGetEndpoint {
+  export const path = '/tickets/:id'
+  export const method = 'GET'
+
+  export type Request = {}
+  export type Response = {
+    success: boolean
+    message: string
+    data?: Ticket
+  }
+}
+
+export namespace PaymentListEndpoint {
+  /**
+   * @description
+   * This endpoint is used to get list of payments.
+   */
+  export const path = '/payments'
+  export const method = 'GET'
+
+  export type Request = {}
+  export type Response = {
+    success: boolean
+    message: string
+    data?: Payment[]
+  }
+}
+
+export namespace PaymentCreateEndpoint {
+  /**
+   * @description
+   * This endpoint is used to create new payment.
+   */
+  export const path = '/payments'
+  export const method = 'POST'
+
+  export type Request =  {}
+  export type Response = {
+    success: boolean
+    message: string
+    data?: Payment
+  }
+}
+
+export namespace PaymentUpdateEndpoint {
+  /**
+   * @description
+   * This endpoint is used to update payment.
+   */
+  export const path = '/payments/:id'
+  export const method = 'PATCH'
+
+  export type Request = Payment
+  export type Response = {
+    success: boolean
+    message: string
+    data?: Payment
   }
 }
 

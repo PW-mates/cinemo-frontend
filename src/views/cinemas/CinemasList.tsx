@@ -12,6 +12,8 @@ import Link from '@mui/material/Link'
 import { Theater } from 'src/@core/layouts/types'
 
 import CinemaInfo from './CinemaInfo'
+import { IconButton } from '@mui/material'
+import { EyeOutline } from 'mdi-material-ui'
 
 interface Column {
   id: 'id' | 'name' | 'address' | 'phone' | 'email' | 'website'
@@ -46,7 +48,7 @@ const columns: readonly Column[] = [
   }
 ]
 
-const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
+const CinemasList = ({ cinemasData, updatedCinemaInfo }: { cinemasData: Theater[]; updatedCinemaInfo: any }) => {
   const [page, setPage] = useState<number>(0)
   const [rowsPerPage, setRowsPerPage] = useState<number>(10)
   const [showCinemaInfo, setShowCinemaInfo] = useState(false)
@@ -54,8 +56,7 @@ const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
 
   const selectCinema = (id: Theater['id'], event: ChangeEvent<any>) => {
     if (!event.target.href) {
-      let cinema
-      cinema = cinemasData.find(cinema => cinema.id === id)
+      const cinema = cinemasData.find(cinema => cinema.id === id)
 
       setSelectedCinema(cinema)
       setShowCinemaInfo(true)
@@ -81,34 +82,48 @@ const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow>
-              {columns.map(column => (
-                <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
-                  {column.label}
+              {[
+                ...columns.map(column => (
+                  <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
+                    {column.label}
+                  </TableCell>
+                )),
+                <TableCell key='actions' align='right' sx={{ minWidth: 100 }}>
+                  Rooms
                 </TableCell>
-              ))}
+              ]}
             </TableRow>
           </TableHead>
           <TableBody>
             {cinemasData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(cinema => {
               return (
-                <TableRow hover role='checkbox' tabIndex={-1} key={cinema.id} onClick={e => selectCinema(cinema.id, e)}>
-                  {columns.map(column => {
-                    const value = cinema[column.id]
+                <TableRow hover role='checkbox' tabIndex={-1} key={cinema.id}>
+                  {[
+                    ...columns.map(column => {
+                      const value = cinema[column.id]
 
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? (
-                          column.format(value)
-                        ) : column.id === 'website' ? (
-                          <Link href={value.toLocaleString()} target='_blank'>
-                            {value}
-                          </Link>
-                        ) : (
-                          value
-                        )}
-                      </TableCell>
-                    )
-                  })}
+                      return (
+                        <TableCell key={column.id} align={column.align} onClick={e => selectCinema(cinema.id, e)}>
+                          {column.format && typeof value === 'number' ? (
+                            column.format(value)
+                          ) : column.id === 'website' ? (
+                            <Link href={value} target='_blank'>
+                              {value}
+                            </Link>
+                          ) : (
+                            value
+                          )}
+                        </TableCell>
+                      )
+                    }),
+                    <TableCell key='actions' align='right'>
+                      <Link href={`/rooms?cinemaId=${cinema.id}`}>
+                        <IconButton>
+                          <EyeOutline />
+                        </IconButton>
+                      </Link>
+                    </TableCell>
+                  ]}
                 </TableRow>
               )
             })}
@@ -124,7 +139,13 @@ const CinemasList = ({ cinemasData }: { cinemasData: Theater[] }) => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      {showCinemaInfo && <CinemaInfo selectedCinema={selectedCinema} closeCinemaInfo={closeCinemaInfo} />}
+      {showCinemaInfo && selectedCinema && (
+        <CinemaInfo
+          selectedCinema={selectedCinema}
+          closeCinemaInfo={closeCinemaInfo}
+          updatedCinemaInfo={updatedCinemaInfo}
+        />
+      )}
     </Paper>
   )
 }

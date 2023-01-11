@@ -20,6 +20,9 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import KeyOutline from 'mdi-material-ui/KeyOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
+import useFetch from 'src/@core/utils/use-fetch'
+import { AccountUpdatePasswordEndpoint } from 'src/configs/appConfig'
+import Snackbar from '@mui/material/Snackbar'
 
 interface State {
   newPassword: string
@@ -39,6 +42,10 @@ const TabSecurity = () => {
     confirmNewPassword: '',
     showCurrentPassword: false,
     showConfirmNewPassword: false
+  })
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: ''
   })
 
   // Handle Current Password
@@ -72,6 +79,42 @@ const TabSecurity = () => {
   }
   const handleMouseDownConfirmNewPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
+  }
+
+  const { fetchData, response, error, loading } = useFetch()
+  const saveUserInfo = () => {
+    if (values.newPassword !== values.confirmNewPassword) {
+      setSnackbar({ open: true, message: 'New password and confirm password are not the same' })
+
+      return
+    }
+    if (values.newPassword.length < 6) {
+      setSnackbar({ open: true, message: 'New password must be at least 6 characters' })
+
+      return
+    }
+    if (values.currentPassword === values.newPassword) {
+      setSnackbar({ open: true, message: 'Current password and new password are the same' })
+
+      return
+    }
+
+    fetchData(AccountUpdatePasswordEndpoint.method, AccountUpdatePasswordEndpoint.path, undefined, {
+      oldPassword: values.currentPassword,
+      newPassword: values.newPassword
+    }).then(res => {
+      setSnackbar({ open: true, message: res?.message })
+      if (res && res.success) {
+        setValues({
+          newPassword: '',
+          currentPassword: '',
+          showNewPassword: false,
+          confirmNewPassword: '',
+          showCurrentPassword: false,
+          showConfirmNewPassword: false
+        })
+      }
+    })
   }
 
   return (
@@ -154,6 +197,11 @@ const TabSecurity = () => {
                   />
                 </FormControl>
               </Grid>
+              <Grid item xs={12}>
+                <Button variant='contained' sx={{ marginRight: 3.5 }} onClick={() => saveUserInfo()}>
+                  Change password
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
 
@@ -167,55 +215,16 @@ const TabSecurity = () => {
           </Grid>
         </Grid>
       </CardContent>
-
-      <Divider sx={{ margin: 0 }} />
-
-      <CardContent>
-        <Box sx={{ mt: 1.75, display: 'flex', alignItems: 'center' }}>
-          <KeyOutline sx={{ marginRight: 3 }} />
-          <Typography variant='h6'>Two-factor authentication</Typography>
-        </Box>
-
-        <Box sx={{ mt: 5.75, display: 'flex', justifyContent: 'center' }}>
-          <Box
-            sx={{
-              maxWidth: 368,
-              display: 'flex',
-              textAlign: 'center',
-              alignItems: 'center',
-              flexDirection: 'column'
-            }}
-          >
-            <Avatar
-              variant='rounded'
-              sx={{ width: 48, height: 48, color: 'common.white', backgroundColor: 'primary.main' }}
-            >
-              <LockOpenOutline sx={{ fontSize: '1.75rem' }} />
-            </Avatar>
-            <Typography sx={{ fontWeight: 600, marginTop: 3.5, marginBottom: 3.5 }}>
-              Two factor authentication is not enabled yet.
-            </Typography>
-            <Typography variant='body2'>
-              Two-factor authentication adds an additional layer of security to your account by requiring more than just
-              a password to log in. Learn more.
-            </Typography>
-          </Box>
-        </Box>
-
-        <Box sx={{ mt: 11 }}>
-          <Button variant='contained' sx={{ marginRight: 3.5 }}>
-            Save Changes
-          </Button>
-          <Button
-            type='reset'
-            variant='outlined'
-            color='secondary'
-            onClick={() => setValues({ ...values, currentPassword: '', newPassword: '', confirmNewPassword: '' })}
-          >
-            Reset
-          </Button>
-        </Box>
-      </CardContent>
+      <Snackbar
+        open={snackbar.open}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}
+        autoHideDuration={6000}
+        message={snackbar.message}
+        onClose={() => setSnackbar({ open: false, message: '' })}
+      />
     </form>
   )
 }

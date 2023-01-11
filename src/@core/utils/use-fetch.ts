@@ -13,7 +13,7 @@ export default function useCustomFetch<T>() {
     method = 'GET',
     pathname: string,
     headers?: Record<string, string>,
-    data?: Record<string, string>,
+    data?: Record<string, any>,
     options?: RequestInit
 
     // settings?: Settings

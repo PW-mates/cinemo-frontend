@@ -45,10 +45,15 @@ export type BlankLayoutProps = {
   children: ReactNode
 }
 
+export type UserRole = {
+  id: number,
+  name?: string,
+}
+
 export type User = {
   id: string
-  access_token: string
-  birthDate?: Date
+  access_token?: string
+  birthDate?: number
   country?: string
   gender: 'male' | 'female' | 'other'
   bio?: string
@@ -64,7 +69,15 @@ export type User = {
   profilePicture?: string
   cinema?: any
   status: 'active' | 'inactive'
-  role: 'admin' | 'user'
+  roles?: UserRole[]
+}
+
+export type ShortUser = {
+  id: string
+  firstName: string
+  lastName: string
+  username: string
+  profilePicture?: string
 }
 
 export type MovieCategory = {
@@ -80,14 +93,14 @@ export type Movie = {
   description?: string
   director?: string
   distributor?: string
-  releaseDate?: Date
+  releaseDate?: number
   duration?: number
   rating?: number
   posterPhoto?: string
   trailerUrl?: string
-  showingFrom?: Date
-  showingTo?: Date
-  category?: MovieCategory[]
+  showingFrom?: number
+  showingTo?: number
+  categories?: MovieCategory[]
 }
 
 export type Theater = {
@@ -101,7 +114,7 @@ export type Theater = {
   phone: string
   email: string
   website: string
-  manager: User
+  manager: ShortUser
 }
 export type LatLngLiteral = google.maps.LatLngLiteral;
 
@@ -117,6 +130,8 @@ export type Room = {
 export type SeatType = {
   id: string
   name: string
+  color: string
+  price: number
 }
 
 export type Seat = {
@@ -142,26 +157,17 @@ export type Ticket = {
   screening: Screening
   seat?: Seat[]
   seller: User
-  totalPrice: number
+  totalPrice: number // Need to be calculated from seat type price
   createdAt: Date
-  paymentMethod: 'cash' | 'card'
-  paymentId: string
   status: 'new' | 'paid' | 'cancelled' | 'used' | 'expired'
-}
-
-export type TicketType = {
-  id: string
-  name: string
-  seatType: SeatType
-  price: number
-  description?: string
+  payment: Payment
 }
 
 export type Payment = {
   id: string
   amount: number
   currency: string
-  status: 'unpaid' | 'paid' | 'cancelled'
+  status: 'unpaid' | 'paid' | 'cancelled' // if status changed to 'paid', ticket status need to change to paid
   paymentMethod: 'cash' | 'card'
   reference: string
 }

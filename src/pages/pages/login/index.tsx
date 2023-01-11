@@ -170,6 +170,11 @@ const LoginPage = () => {
                 }
               />
             </FormControl>
+            <Box
+              sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
+            >
+
+            </Box>
             <Button
               disabled={loading}
               fullWidth
